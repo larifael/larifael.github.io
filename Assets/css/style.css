@@ -1,0 +1,146 @@
+body, html {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer; 
+    background-color: transparent;
+    font-style: normal;
+}
+
+@media (max-width: 767px) {
+    .card-title {
+        font-size: 10px; 
+    }
+}
+
+#navegador {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-top: 10px solid #858585;
+}
+
+#navegador label {
+    color: #FFFFFF;
+    margin-right: 10px;
+    font-weight: 500;
+}
+
+#navegador select {
+    background-color: #6c6c6c;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 30px 10px 15px; /* Aumenta el padding a la derecha para acomodar el ícono */
+    font-size: 16px;
+    cursor: pointer;
+    outline: none;
+    appearance: none; /* Elimina la apariencia estándar en todos los navegadores */
+    -webkit-appearance: none; /* Para Safari y Chrome */
+    -moz-appearance: none; /* Para Firefox */
+    background: url('data:image/svg+xml;utf8,<svg fill="white" height="24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>') no-repeat right 0.5em center/8%;
+    border: 1px solid #ccc;
+    padding-right: 1.5em; 
+}
+#navegador select option {
+    background-color: #333; 
+    color: white; 
+}
+
+#navegador select option:checked {
+    background-color: #555; 
+    color: yellow; 
+}
+
+#navegador select option:hover {
+    background-color: #444; 
+    color: cyan; 
+}
+@media (max-width: 992px) { 
+    #navegador {
+        padding: 15px;
+    }
+
+    #navegador label, 
+    #navegador select {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    #navegador {
+        padding: 10px;
+    }
+
+    #navegador label, 
+    #navegador select {
+        font-size: 12px;
+    }
+
+    #navegador select {
+        padding: 5px 25px 5px 10px;
+    }
+}
+
+.loading-spinner {
+    border: 16px solid #f3f3f3; /* Color del borde exterior */
+    border-top: 16px solid #3498db; /* Color del borde superior */
+    border-radius: 50%; /* Forma circular */
+    width: 50px; /* Ancho */
+    height: 50px; /* Alto */
+    animation: spin 2s linear infinite; /* Animación */
+    display: none;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+#ContenedorDePagina {
+    transition: opacity 1s;
+}
+
+#acumulador {
+    font-size: 24px;
+    transition: all 0.5s;
+    color: blue;
+  }
+
+#animacionContainer {
+    position: relative;
+    width: 500px;
+    height: 500px;
+    border: 1px solid #000;
+    overflow: hidden;
+}
+.cuadrado {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: red;
+}
+
+.animate__fadeOut {
+    animation-duration: 2s; /* Duración personalizada de la animación */
+  }
+  .card-img:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 255, 0.5);
+  }
+
+#map{
+    height: 500px;
+    width: 100%;    
+}

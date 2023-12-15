@@ -1,0 +1,306 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    --dly:0s;
+    position: relative;
+    background-color: rgb(250, 232, 177);
+    max-width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+section {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+}
+
+.panel {
+    position: absolute;
+    bottom: -5vh;
+    width: 120%;
+    height: 50vh;
+    background-color: rgb(124, 137, 163);
+    border-radius: 20% 20% 0 0;
+    left: -10%;
+    border: rgb(51, 54, 62) 2vh solid;
+    box-shadow: inset 0 2.5vh 0 10px rgb(116, 113, 158);
+
+}
+
+.ventana {
+    position: relative;
+    top: -5vh;
+}
+
+.left,
+.right,
+.left2,
+.right2 {
+    position: relative;
+    z-index: -1;
+    width: 5vw;
+    max-width: 9vh;
+    height: 70vh;
+}
+
+.left,
+.left2 {
+    float: left;
+    transform: skew(10deg);
+}
+
+.left,
+.right {
+    background-color: rgb(96, 87, 87);
+}
+
+.left2,
+.right2 {
+    background-color: gray;
+}
+
+.right,
+.right2 {
+    float: right;
+    transform: skew(-10deg);
+}
+
+
+.barco {
+    animation: flotar 1.5s linear infinite;
+}
+
+.botones,
+.botones2,
+.botones3 {
+    position: absolute;
+    width: 70vw;
+    height: 20vh;
+    background-color: rgb(28, 28, 36);
+    left: 15vw;
+    top: 5vh;
+    border-radius: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.botones3{
+    background-color:  rgb(28, 28, 36);
+    top:27vh;
+    height: 10vh;
+    font-size: 2.5vh;
+    color: wheat;
+}
+.botones button {
+    animation-duration: 3s;
+    animation-timing-function: linear;
+    animation-iteration-count: 1;
+}
+
+.botones2 {
+    background: none;
+}
+
+.botones button,
+.botones2 button,
+.botones3 button {
+    color: white;
+    background-color: rgb(175, 194, 204);
+    border: none;
+    position: relative;
+    z-index: 20;
+    width: 15vw;
+    max-width: 15vh;
+    max-height: 15vh;
+    height: 15vw;
+    border-radius: 20%;
+    cursor: pointer;
+    font-size: 5rem;
+    margin: auto;
+}
+
+.botones2 button {
+    cursor: default;
+    z-index: 19;
+    top: 2vh;
+    background-color: rgb(129, 145, 145);
+    animation-duration: 0.2s;
+}
+
+.botones button:focus {
+    animation-name: pulsarRespuesta;
+    animation-play-state: running;
+}
+
+.botones button:hover {
+    color: black;
+    background-color: rgb(234, 227, 195);
+    box-shadow: 0 0 60px 20px rgba(128, 238, 143, 0.319);
+}
+
+.botones .respuesta {
+    font-size: 2rem;
+    background-color: rgb(150, 142, 133);
+}
+
+
+.radio {
+    position: absolute;
+    width: 10%;
+    height: 12vh;
+
+    background-color: rgb(28, 28, 36);
+    right: 10vw;
+    bottom: 5vh;
+    border-radius: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.radio .play {
+    color: white;
+    background-color: rgb(91, 61, 70);
+    border: none;
+    position: relative;
+    z-index: 20;
+    width: 5vw;
+    max-width: 15vh;
+    max-height: 15vh;
+    height: 5vw;
+    border-radius: 50%;
+    font-size: 2rem;
+    margin: auto;
+    z-index: 20;
+
+}
+
+.radio .play::before {
+    content: attr(data-content);
+    position: absolute;
+    top: -25%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(194, 137, 160);
+    border-radius: 50%;
+    z-index: 3;
+    animation-duration: 0.3s;
+    animation-timing-function: linear;
+}
+
+.radio .play:focus::before {
+    animation-name: pulsarRadio;
+    animation-play-state: running;
+}
+
+.radio .play:hover::before {
+    background-color: rgb(217, 170, 177);
+    box-shadow: 0 0 30px 10px rgba(212, 114, 129, 0.319);
+}
+
+@keyframes pulsarRespuesta {
+    0% {
+        top: 0;
+    }
+    5%{
+        top: 2vh;
+    }
+    50% {
+        top: 2vh;
+    }
+
+    100% {
+        top: 0;
+        animation-name: none;
+    }
+}
+
+@keyframes pulsarRadio {
+    0% {
+        top: -25%;
+    }
+
+    50% {
+        top: 0%;
+    }
+
+    100% {
+        top: -25%;
+        animation-name: none;
+    }
+}
+
+@keyframes rotar {
+    0% {
+        transform: rotate(0);
+    }
+
+    20% {
+        transform: rotate(calc(1.7deg));
+    }
+
+    25% {
+        transform: rotate(2deg);
+    }
+
+    30% {
+        transform: rotate(2.2deg);
+    }
+
+    50% {
+        transform: rotate(1deg);
+    }
+
+    80% {
+        transform: rotate(-2.2deg);
+    }
+
+    90% {
+        transform: rotate(-1deg);
+    }
+
+    100% {
+        transform: rotate(0);
+    }
+}
+
+@keyframes flotar {
+    0% {
+        bottom: 0;
+    }
+
+    20% {
+        bottom: -1.8vh;
+    }
+
+    25% {
+        bottom: -2vh;
+    }
+
+    30% {
+        bottom: -2.2vh;
+    }
+
+    50% {
+        bottom: -3vh;
+    }
+
+    80% {
+        bottom: -1vh;
+    }
+
+    90% {
+        bottom: -0.3vh;
+    }
+
+    100% {
+        bottom: 0px;
+    }
+}

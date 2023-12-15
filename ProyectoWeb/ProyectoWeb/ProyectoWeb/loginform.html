@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CachinaTec</title>
+    <link rel="stylesheet" href="Assets/Librerias/Boostrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="Assets/css/style.css">
+    <link rel="shortcut icon" href="Assets/img/logo.jpg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+</head>
+<style>
+    .formulario{
+        margin: 0px;
+        padding: 0px;
+        font-family: 'poppins', sans-serif;
+    }
+    .formulario section{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        width: 100%;
+        background: url("Assets/img/Background2.jpg") no-repeat;
+        background-position: center;
+        background-size: cover;
+    }
+    .formulario .form-box{
+        position: relative;
+        width: 400px;
+        height: 450px;
+        background: transparent;
+        border: 2px solid rgba(255, 255, 255,0.5);
+        border-radius: 20px;
+        backdrop-filter: blur(15px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .formulario h2{
+        font-size: 2em;
+        color: #fff;
+        text-align: center;
+    }
+    .formulario .inputbox{
+        position: relative;
+        margin: 30px auto;
+        width: 310px;
+        border-bottom: 2px solid #fff;
+    }
+    .inputbox label{
+        position: absolute;
+        top: 50%;
+        left: 5px;
+        transform: translateY(-50%);
+        color: #fff;
+        font-size: 1em;
+        pointer-events: none;
+        transition: .5s;
+    }
+    input:focus ~ label,
+    input:valid ~ label{
+        top: -5px;
+    }
+
+    .inputbox input{
+        width: 100%;
+        height: 50px;
+        background: transparent;
+        border: none;
+        outline: none;
+        font-size: 1em;
+        padding:0 35px 0 5px;
+        color: #fff;
+    }
+    .inputbox ion-icon{
+        position: absolute;
+        right: 0px;
+        color: #fff;
+        font-size: 1.2em;
+        top: 20px;
+    }
+    .forget{
+        margin: -15px 0 15px;
+        font-size: .9em;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+    }
+    .forget label input{
+        margin-right: 3px;
+    }
+    .forget label a{
+        color: #fff;
+        text-decoration: none;
+    }
+    .forget label a:hover{
+        text-decoration: underline;
+    }
+    .formulario button{
+        width: 100%;
+        height: 40px;
+        border-radius: 40px;
+        background: #fff;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        font-size: 1em;
+        font-weight: 600;
+    }
+    .register{
+        font-size: .9em;
+        color: #fff;
+        text-align: center;
+        margin: 25px 0 10px;
+    }
+    .register p a{
+        text-decoration: none;
+        color: #fff;
+        font-weight: 600;
+    }
+    .register p a:hover{
+        text-decoration: underline;
+    }
+</style>
+<body class="d-flex flex-column min-vh-100 bg-dark-subtle" data-bs-theme="light">
+    <nav class="navbar fixed-top bg-dark navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <img class="rounded-circle" src="Assets/img/logo.jpg" alt="logo" width="50" height="50">
+            </a>
+            <a  href="index.html"><span class="navbar-brand mb-0 h1 animate__animated animate__tada">CachinaTec</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end bg-dark" style="width: 250px;" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header text-white">
+                  <a  href="index.html"><h5 class="offcanvas-title" id="offcanvasNavbarLabel">CachinaTec</h5></a>
+                  <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                </div>
+                <div class="offcanvas-footer text-white p-3" style="font-size: 12px;">
+                    <p class="mb-1 ">INSTITUTO DE EDUCACIÓN SUPERIOR “SIMÓN BOLÍVAR”</p>
+                    <p>DESARROLLO DE SISTEMAS DE LA INFORMACIÓN</p>
+                    <br>
+                    <div class="row" style="align-content: center;">
+                        <div class="col-6">
+                            <a href="https://www.institutobolivar.edu.pe" target="_blank">
+                                <img class="rounded-circle" src="Assets/img/LogoBolivar.png" alt="logo Simón Bolívar" width="90" height="90">
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <a href="index.html">
+                                <img class="rounded-circle" src="Assets/img/logo.jpg" alt="logo Simón Bolívar" width="90" height="90">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <br>
+    <br>
+    <br>
+    <main class="container-fluid flex-grow-1 bg-light-subtle animate__animated" id="ContenedorDePagina" style="padding: 0px;">
+        <div class="formulario">
+            <section>
+                <div class="form-box">
+                    <div class="form-value">
+                        <form action="">
+                            <h2>Login</h2>
+                            <div class="inputbox">
+                                <ion-icon name="mail-outline"></ion-icon>
+                                <input type="email" required>
+                                <label for="">Email</label>
+                            </div>
+                            <div class="inputbox">
+                                <ion-icon name="lock-closed-outline"></ion-icon>
+                                <input 
+                                    type="password" 
+                                    id="contrasena" 
+                                    name="contrasena" 
+                                    minlength="6"
+                                    maxlength="12"
+                                    pattern="^(?=.*\d)(?=.*[a-zA-Z]).{6,12}$"
+                                    title="La contraseña debe contener al menos una letra y un número, y tener entre 6 y 12 caracteres."
+                                    placeholder=""
+                                    oninvalid="this.setCustomValidity('Has introducido una contraseña incorrecta. Asegúrate de incluir entre 6 y 12 caracteres, con al menos una letra y un número.')"
+                                    oninput="this.setCustomValidity('')"
+                                    required>
+                                <label for="">Password</label>
+                                <!-- 
+                                    Expresión Regular para Validación de Contraseña:
+                                    ^             : inicio de la cadena de entrada
+                                    (?=.*\d)      : al menos un dígito numérico
+                                    (?=.*[a-zA-Z]): al menos una letra (mayúscula o minúscula)
+                                    .{6,12}       : cualquier carácter, con una longitud total de 6 a 12 caracteres
+                                    $             : fin de la cadena de entrada
+                                -->
+                            </div>
+                            <div class="forget">
+                                <label for=""><input type="checkbox">Recordar <a href="#">Mi Password</a></label>
+                            </div>
+                            <button>Log In</button>
+                            <div class="register">
+                                <p>Si no tienes una cuenta registrada: <a href="#">Registrese aquí</a></p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>&copy; 2023 CachinaTec.</h5>
+                    <p>Información adicional del sitio.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Enlaces útiles</h5>
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a href="#" class="nav-link text-white">Inicio</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link text-white">Sobre nosotros</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link text-white">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contacto</h5>
+                    <p>cachinatec@gmail.com</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="Assets/Librerias/Boostrap/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/5391b865ab.js" crossorigin="anonymous"></script>
+</body>
+</html>
+
+

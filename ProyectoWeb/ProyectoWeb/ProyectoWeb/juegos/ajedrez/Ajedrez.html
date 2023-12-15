@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CachinaTec</title>
+    <script src="../../scripts/jquery/jquery-3.7.1.js"></script>
+    <script src="../../scripts/jquery/jquery.color.plus-names-2.0.0.js"></script>
+    <script src="../../scripts/jquery/jquery.easing.1.3.js"></script>
+    <script src="../../scripts/jquery/jquery.drawsvg.min.js"></script>
+    <link rel="stylesheet" href="../../styles/general/cabecera.css">
+    <link rel="stylesheet" href="../../styles/index/logo.css">
+    <link rel="stylesheet" href="../../styles/general/main.css">
+    <link rel="stylesheet" href="../../Assets/Librerias/Boostrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="../../Assets/css/style.css">
+    <link rel="shortcut icon" href="../../Assets/img/logo.jpg">
+    <style>
+        .chessboard-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .file-labels, .rank-labels {
+            display: flex;
+        }
+
+        .file-labels span, .rank-labels span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px; /* Igual al ancho de las casillas del tablero */
+            height: 60px; /* Igual al alto de las casillas del tablero */
+        }
+
+        .top-labels, .bottom-labels {
+            justify-content: center;
+        }
+
+        .chessboard-with-ranks {
+            display: flex;
+            align-items: center;
+        }
+
+        .left-labels, .right-labels {
+            flex-direction: column;
+            justify-content: center;
+        }
+        .highlight {
+            stroke: #ff0;
+            stroke-width: 2;
+            filter: drop-shadow(0 0 5px yellow);
+        }
+        .piece {
+            transition: all 0.5s ease; 
+        }
+        .casilla{
+            transition: all 0.5s ease; 
+        }
+        #moveForward {
+            display: none;
+        }
+        #moveTwoSteps{
+            display: none;
+        }
+        #turnIndicator {
+            text-align: center;       
+            color: white;             
+            -webkit-text-stroke: 1px black;
+            font-weight: bold;      
+            padding: 10px;         
+            margin: 0;
+            transition: color 0.5s ease;         
+        }
+
+        .turn-black {
+            color: black;
+            -webkit-text-stroke: 1px white;
+        }
+        #endGameMessage {
+            display: none;
+            position: fixed; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            font-size: 2em;
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 1000; 
+        }
+        #subconainerAjedrez{
+            background: url("../../Assets/img/fondo_espacial.png");
+        }
+    </style>
+</head>
+
+<body class="d-flex flex-column min-vh-100 bg-dark-subtle" data-bs-theme="light">
+    <nav class="navbar fixed-top bg-dark navbar-dark" style="height: 82px;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../../index.html">
+                <div class="cajaLogo">
+                    <div class="fondologo"></div>
+                    <img src="../../sources/logo2.svg" alt="" class="logo" id="logo">
+                    <svg class="lineart" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" version="1.1"
+                        style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+                        viewBox="0 0 200 200" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
+                        <defs>
+                            <clipPath id="id0">
+                                <path
+                                    d="M139.5 124.54c1.27,0.32 2.48,0.82 3.59,1.46 2.32,-1.34 3.36,-1.9 4.78,-2.73 0.74,0.74 2.43,2.43 3.04,3.07 -0.58,1.52 -2.04,3.45 -2.59,4.85 0.67,1.15 1.19,2.41 1.52,3.73 2.54,0.68 3.67,1.02 5.24,1.44 0,1.04 0,3.42 -0.03,4.31 -1.49,0.67 -3.92,1 -5.3,1.62 -0.35,1.28 -0.89,2.49 -1.56,3.61 1.34,2.34 1.91,3.37 2.73,4.8 -0.73,0.74 -2.42,2.42 -3.06,3.03 -1.57,-0.59 -3.57,-2.12 -4.99,-2.63l-0.11 -0.05c-1.06,0.58 -2.2,1.03 -3.4,1.32 -0.74,2.75 -1.08,3.9 -1.52,5.54 -1.04,0 -3.42,0 -4.31,-0.03 -0.69,-1.53 -1.02,-4.02 -1.66,-5.39 -0.06,-0.12 -0.09,-0.23 -0.11,-0.32 -1.09,-0.33 -2.13,-0.8 -3.1,-1.36l-0.1 0.05c-2.52,1.46 -3.58,2.04 -5.06,2.89 -0.74,-0.73 -2.43,-2.42 -3.04,-3.07 0.6,-1.57 2.13,-3.56 2.64,-4.98 0.07,-0.18 0.15,-0.31 0.23,-0.39 -0.52,-0.96 -0.94,-1.98 -1.23,-3.06l-0.18 -0.04c-2.82,-0.75 -3.98,-1.1 -5.63,-1.54 0,-1.04 0,-3.42 0.03,-4.31 1.53,-0.69 4.02,-1.02 5.39,-1.66 0.15,-0.07 0.28,-0.11 0.4,-0.12 0.3,-1.09 0.73,-2.13 1.27,-3.11l-0.04 -0.08c-1.46,-2.52 -2.04,-3.58 -2.89,-5.06 0.73,-0.74 2.42,-2.43 3.06,-3.04 1.57,0.6 3.57,2.13 4.99,2.64 0.08,0.03 0.15,0.07 0.22,0.1 1.02,-0.6 2.13,-1.07 3.3,-1.4 0.73,-2.73 1.07,-3.88 1.51,-5.51 1.04,0 3.42,0 4.31,0.02 0.69,1.54 1.02,4.03 1.66,5.4zm-21.43 -13.66l-0.32 0.32 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.79 -0.79 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.79 -0.79 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.79 -0.79 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.79 -0.79 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.79 -0.79 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.79 -0.79 0.78 -0.79 0.79 -0.15 0.15c-3.11,3.12 -6.97,7.34 -7.13,15.65 -0.07,3.62 -1.78,7.16 -4.54,9.93 -3.69,3.68 -8.75,5.14 -13.54,4.38l10.21 -10.2c2.06,-2.06 0.09,-5.61 -0.66,-8.42 -0.28,-1.04 -2.42,-3.12 -3.92,-3.84 -2.69,-1.29 -6.35,-2.79 -8.37,-0.76l-10.24 10.24c-0.76,-4.79 0.7,-9.85 4.38,-13.53 2.71,-2.71 6.15,-4.27 9.69,-4.53 9.01,-0.65 14.34,-4.89 16.32,-6.84l0.09 -0.09 0.31 -0.32 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.15 -0.15c3.11,-3.12 6.98,-7.34 7.14,-15.65 0.07,-3.63 1.77,-7.16 4.54,-9.93 3.69,-3.68 8.75,-5.15 13.53,-4.39l-10.21 10.21c-2.06,2.06 -0.09,5.61 0.67,8.42 0.27,1.04 2.42,3.12 3.92,3.84 2.68,1.29 6.34,2.79 8.37,0.76l10.24 -10.24c0.76,4.78 -0.7,9.85 -4.39,13.53 -2.7,2.71 -6.15,4.27 -9.69,4.53 -9,0.65 -14.34,4.89 -16.31,6.84l-0.09 0.09zm-4.89 -57.08l3.34 3.34c0.61,0.61 0.06,2.29 -0.53,2.93l-10.7 11.6 -3.06 0.19 -3.85 -3.84 3.85 3.84 -31.21 31.2 0.81 0.81c0.68,0.68 0.68,1.79 0,2.47l-0.18 0.19c-0.68,0.67 -1.71,0.76 -2.19,0.28 -0.66,-0.67 -1.5,0.14 -2.1,0.73l-0.77 0.77c1.22,1.92 0.99,4.51 -0.68,6.17l-37.4 37.41c-1.93,1.93 -5.09,1.93 -7.02,0l-3.77 -3.77c-1.93,-1.93 -1.93,-5.09 0,-7.02l37.4 -37.41c1.89,-1.88 4.95,-1.93 6.89,-0.13l0.7 -0.71c0.69,-0.69 1.34,-1.46 0.53,-2.26 -0.49,-0.49 -0.42,-1.53 0.26,-2.21l0.18 -0.19c0.68,-0.68 1.79,-0.68 2.47,0l1.03 1.03 31.2 -31.2 0.11 -3.15 12 -10.37c0.64,-0.55 2.09,-1.3 2.69,-0.7zm-15.1 -39.04l56.7 0c11.69,0 21.26,9.56 21.26,21.26l0 5.69 1.37 0c0.82,0 1.49,0.67 1.49,1.49l0 16.97c0,0.81 -0.67,1.48 -1.49,1.48l-1.37 0 0 4.8 1.37 0c0.82,0 1.49,0.67 1.49,1.49l0 7.47c0,0.82 -0.67,1.49 -1.49,1.49l-1.37 0 0 85.36c0,12.43 -10.18,22.61 -22.62,22.61l-55.34 0c-11.43,0 -20.95,-8.59 -22.41,-19.63 -0.59,-4.4 2.78,-7.67 5.99,-10.53l0 8.8c0,8.48 6.95,15.43 15.43,15.43l57.32 0c8.49,0 15.43,-6.95 15.43,-15.43l0 -127.39c0,-8.49 -6.94,-15.43 -15.43,-15.43l-57.32 0c-8.48,0 -15.43,6.94 -15.43,15.43l0 41.7 -6.19 6.42 0 -46.86c0,-12.44 10.17,-22.62 22.61,-22.62zm-22.61 115.9l0 -25.13 6.19 -6.91 0 26.39 -6.19 5.65zm71.58 -89.57c0.8,-0.04 1.58,0.02 2.34,0.19 1.1,-1.2 1.59,-1.72 2.26,-2.46 0.56,0.29 1.85,0.96 2.32,1.22 -0.06,0.98 -0.54,2.36 -0.6,3.27 0.6,0.54 1.13,1.17 1.56,1.87 1.59,-0.07 2.3,-0.09 3.29,-0.13 0.19,0.6 0.63,1.97 0.78,2.49 -0.74,0.67 -2.08,1.3 -2.76,1.91 0.03,0.81 -0.06,1.61 -0.24,2.37 1.2,1.11 1.72,1.6 2.46,2.27 -0.29,0.56 -0.95,1.85 -1.21,2.32 -1.02,-0.06 -2.45,-0.57 -3.37,-0.61l-0.07 0c-0.5,0.53 -1.08,0.99 -1.72,1.38 0.08,1.73 0.1,2.46 0.14,3.48 -0.6,0.19 -1.97,0.63 -2.49,0.78 -0.68,-0.76 -1.33,-2.14 -1.95,-2.81 -0.05,-0.06 -0.09,-0.11 -0.12,-0.16 -0.69,0 -1.38,-0.07 -2.04,-0.22l-0.05 0.05c-1.19,1.31 -1.69,1.84 -2.39,2.6 -0.56,-0.29 -1.84,-0.95 -2.32,-1.21 0.06,-1.02 0.58,-2.45 0.61,-3.36 0.01,-0.12 0.03,-0.21 0.06,-0.27 -0.48,-0.46 -0.91,-0.97 -1.27,-1.54l-0.11 0.01c-1.77,0.08 -2.5,0.1 -3.54,0.15 -0.19,-0.61 -0.63,-1.98 -0.78,-2.5 0.76,-0.68 2.14,-1.33 2.81,-1.95 0.08,-0.07 0.15,-0.11 0.21,-0.14 -0.03,-0.69 0.03,-1.37 0.17,-2.03l-0.05 -0.04c-1.3,-1.19 -1.83,-1.69 -2.6,-2.39 0.29,-0.56 0.95,-1.84 1.22,-2.31 1.01,0.05 2.45,0.57 3.36,0.6 0.05,0 0.1,0.01 0.14,0.02 0.49,-0.54 1.04,-1.01 1.65,-1.42 -0.08,-1.71 -0.09,-2.44 -0.14,-3.45 0.6,-0.2 1.97,-0.64 2.49,-0.78 0.68,0.75 1.33,2.13 1.95,2.8zm-1.39 3.04c3.18,-1.02 6.59,0.74 7.61,3.93 1.01,3.18 -0.75,6.59 -3.93,7.61 -3.19,1.01 -6.6,-0.75 -7.61,-3.93 -1.02,-3.19 0.74,-6.6 3.93,-7.61zm-9.87 84.48c5.52,0 9.99,4.47 9.99,9.99 0,5.52 -4.47,10 -9.99,10 -5.52,0 -10,-4.48 -10,-10 0,-5.52 4.48,-9.99 10,-9.99z" />
+                            </clipPath>
+                            <clipPath id="id1">
+                                <path
+                                    d="M139.5 124.54c1.27,0.32 2.48,0.82 3.59,1.46 2.32,-1.34 3.36,-1.9 4.78,-2.73 0.74,0.74 2.43,2.43 3.04,3.07 -0.58,1.52 -2.04,3.45 -2.59,4.85 0.67,1.15 1.19,2.41 1.52,3.73 2.54,0.68 3.67,1.02 5.24,1.44 0,1.04 0,3.42 -0.03,4.31 -1.49,0.67 -3.92,1 -5.3,1.62 -0.35,1.28 -0.89,2.49 -1.56,3.61 1.34,2.34 1.91,3.37 2.73,4.8 -0.73,0.74 -2.42,2.42 -3.06,3.03 -1.57,-0.59 -3.57,-2.12 -4.99,-2.63l-0.11 -0.05c-1.06,0.58 -2.2,1.03 -3.4,1.32 -0.74,2.75 -1.08,3.9 -1.52,5.54 -1.04,0 -3.42,0 -4.31,-0.03 -0.69,-1.53 -1.02,-4.02 -1.66,-5.39 -0.06,-0.12 -0.09,-0.23 -0.11,-0.32 -1.09,-0.33 -2.13,-0.8 -3.1,-1.36l-0.1 0.05c-2.52,1.46 -3.58,2.04 -5.06,2.89 -0.74,-0.73 -2.43,-2.42 -3.04,-3.07 0.6,-1.57 2.13,-3.56 2.64,-4.98 0.07,-0.18 0.15,-0.31 0.23,-0.39 -0.52,-0.96 -0.94,-1.98 -1.23,-3.06l-0.18 -0.04c-2.82,-0.75 -3.98,-1.1 -5.63,-1.54 0,-1.04 0,-3.42 0.03,-4.31 1.53,-0.69 4.02,-1.02 5.39,-1.66 0.15,-0.07 0.28,-0.11 0.4,-0.12 0.3,-1.09 0.73,-2.13 1.27,-3.11l-0.04 -0.08c-1.46,-2.52 -2.04,-3.58 -2.89,-5.06 0.73,-0.74 2.42,-2.43 3.06,-3.04 1.57,0.6 3.57,2.13 4.99,2.64 0.08,0.03 0.15,0.07 0.22,0.1 1.02,-0.6 2.13,-1.07 3.3,-1.4 0.73,-2.73 1.07,-3.88 1.51,-5.51 1.04,0 3.42,0 4.31,0.02 0.69,1.54 1.02,4.03 1.66,5.4zm-21.43 -13.66l-0.32 0.32 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.79 -0.79 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.79 -0.79 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.79 -0.79 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.79 -0.79 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.79 -0.79 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.79 -0.79 0.78 -0.79 0.79 -0.15 0.15c-3.11,3.12 -6.97,7.34 -7.13,15.65 -0.07,3.62 -1.78,7.16 -4.54,9.93 -3.69,3.68 -8.75,5.14 -13.54,4.38l10.21 -10.2c2.06,-2.06 0.09,-5.61 -0.66,-8.42 -0.28,-1.04 -2.42,-3.12 -3.92,-3.84 -2.69,-1.29 -6.35,-2.79 -8.37,-0.76l-10.24 10.24c-0.76,-4.79 0.7,-9.85 4.38,-13.53 2.71,-2.71 6.15,-4.27 9.69,-4.53 9.01,-0.65 14.34,-4.89 16.32,-6.84l0.09 -0.09 0.31 -0.32 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.15 -0.15c3.11,-3.12 6.98,-7.34 7.14,-15.65 0.07,-3.63 1.77,-7.16 4.54,-9.93 3.69,-3.68 8.75,-5.15 13.53,-4.39l-10.21 10.21c-2.06,2.06 -0.09,5.61 0.67,8.42 0.27,1.04 2.42,3.12 3.92,3.84 2.68,1.29 6.34,2.79 8.37,0.76l10.24 -10.24c0.76,4.78 -0.7,9.85 -4.39,13.53 -2.7,2.71 -6.15,4.27 -9.69,4.53 -9,0.65 -14.34,4.89 -16.31,6.84l-0.09 0.09zm-4.89 -57.08l3.34 3.34c0.61,0.61 0.06,2.29 -0.53,2.93l-10.7 11.6 -3.06 0.19 -3.85 -3.84 3.85 3.84 -31.21 31.2 0.81 0.81c0.68,0.68 0.68,1.79 0,2.47l-0.18 0.19c-0.68,0.67 -1.71,0.76 -2.19,0.28 -0.66,-0.67 -1.5,0.14 -2.1,0.73l-0.77 0.77c1.22,1.92 0.99,4.51 -0.68,6.17l-37.4 37.41c-1.93,1.93 -5.09,1.93 -7.02,0l-3.77 -3.77c-1.93,-1.93 -1.93,-5.09 0,-7.02l37.4 -37.41c1.89,-1.88 4.95,-1.93 6.89,-0.13l0.7 -0.71c0.69,-0.69 1.34,-1.46 0.53,-2.26 -0.49,-0.49 -0.42,-1.53 0.26,-2.21l0.18 -0.19c0.68,-0.68 1.79,-0.68 2.47,0l1.03 1.03 31.2 -31.2 0.11 -3.15 12 -10.37c0.64,-0.55 2.09,-1.3 2.69,-0.7zm-15.1 -39.04l56.7 0c11.69,0 21.26,9.56 21.26,21.26l0 5.69 1.37 0c0.82,0 1.49,0.67 1.49,1.49l0 16.97c0,0.81 -0.67,1.48 -1.49,1.48l-1.37 0 0 4.8 1.37 0c0.82,0 1.49,0.67 1.49,1.49l0 7.47c0,0.82 -0.67,1.49 -1.49,1.49l-1.37 0 0 85.36c0,12.43 -10.18,22.61 -22.62,22.61l-55.34 0c-11.43,0 -20.95,-8.59 -22.41,-19.63 -0.59,-4.4 2.78,-7.67 5.99,-10.53l0 8.8c0,8.48 6.95,15.43 15.43,15.43l57.32 0c8.49,0 15.43,-6.95 15.43,-15.43l0 -127.39c0,-8.49 -6.94,-15.43 -15.43,-15.43l-57.32 0c-8.48,0 -15.43,6.94 -15.43,15.43l0 41.7 -6.19 6.42 0 -46.86c0,-12.44 10.17,-22.62 22.61,-22.62zm-22.61 115.9l0 -25.13 6.19 -6.91 0 26.39 -6.19 5.65zm71.58 -89.57c0.8,-0.04 1.58,0.02 2.34,0.19 1.1,-1.2 1.59,-1.72 2.26,-2.46 0.56,0.29 1.85,0.96 2.32,1.22 -0.06,0.98 -0.54,2.36 -0.6,3.27 0.6,0.54 1.13,1.17 1.56,1.87 1.59,-0.07 2.3,-0.09 3.29,-0.13 0.19,0.6 0.63,1.97 0.78,2.49 -0.74,0.67 -2.08,1.3 -2.76,1.91 0.03,0.81 -0.06,1.61 -0.24,2.37 1.2,1.11 1.72,1.6 2.46,2.27 -0.29,0.56 -0.95,1.85 -1.21,2.32 -1.02,-0.06 -2.45,-0.57 -3.37,-0.61l-0.07 0c-0.5,0.53 -1.08,0.99 -1.72,1.38 0.08,1.73 0.1,2.46 0.14,3.48 -0.6,0.19 -1.97,0.63 -2.49,0.78 -0.68,-0.76 -1.33,-2.14 -1.95,-2.81 -0.05,-0.06 -0.09,-0.11 -0.12,-0.16 -0.69,0 -1.38,-0.07 -2.04,-0.22l-0.05 0.05c-1.19,1.31 -1.69,1.84 -2.39,2.6 -0.56,-0.29 -1.84,-0.95 -2.32,-1.21 0.06,-1.02 0.58,-2.45 0.61,-3.36 0.01,-0.12 0.03,-0.21 0.06,-0.27 -0.48,-0.46 -0.91,-0.97 -1.27,-1.54l-0.11 0.01c-1.77,0.08 -2.5,0.1 -3.54,0.15 -0.19,-0.61 -0.63,-1.98 -0.78,-2.5 0.76,-0.68 2.14,-1.33 2.81,-1.95 0.08,-0.07 0.15,-0.11 0.21,-0.14 -0.03,-0.69 0.03,-1.37 0.17,-2.03l-0.05 -0.04c-1.3,-1.19 -1.83,-1.69 -2.6,-2.39 0.29,-0.56 0.95,-1.84 1.22,-2.31 1.01,0.05 2.45,0.57 3.36,0.6 0.05,0 0.1,0.01 0.14,0.02 0.49,-0.54 1.04,-1.01 1.65,-1.42 -0.08,-1.71 -0.09,-2.44 -0.14,-3.45 0.6,-0.2 1.97,-0.64 2.49,-0.78 0.68,0.75 1.33,2.13 1.95,2.8zm-1.39 3.04c3.18,-1.02 6.59,0.74 7.61,3.93 1.01,3.18 -0.75,6.59 -3.93,7.61 -3.19,1.01 -6.6,-0.75 -7.61,-3.93 -1.02,-3.19 0.74,-6.6 3.93,-7.61zm-9.87 84.48c5.52,0 9.99,4.47 9.99,9.99 0,5.52 -4.47,10 -9.99,10 -5.52,0 -10,-4.48 -10,-10 0,-5.52 4.48,-9.99 10,-9.99z" />
+                            </clipPath>
+                        </defs>
+                        <g id="Capa_x0020_1">
+                            <metadata id="CorelCorpID_0Corel-Layer" />
+                            <g>
+                            </g>
+                            <g style="clip-path:url(#id0)">
+                                <g>
+                                </g>
+                            </g>
+                            <path class="fil0 str0"
+                                d="M139.5 124.54c1.27,0.32 2.48,0.82 3.59,1.46 2.32,-1.34 3.36,-1.9 4.78,-2.73 0.74,0.74 2.43,2.43 3.04,3.07 -0.58,1.52 -2.04,3.45 -2.59,4.85 0.67,1.15 1.19,2.41 1.52,3.73 2.54,0.68 3.67,1.02 5.24,1.44 0,1.04 0,3.42 -0.03,4.31 -1.49,0.67 -3.92,1 -5.3,1.62 -0.35,1.28 -0.89,2.49 -1.56,3.61 1.34,2.34 1.91,3.37 2.73,4.8 -0.73,0.74 -2.42,2.42 -3.06,3.03 -1.57,-0.59 -3.57,-2.12 -4.99,-2.63l-0.11 -0.05c-1.06,0.58 -2.2,1.03 -3.4,1.32 -0.74,2.75 -1.08,3.9 -1.52,5.54 -1.04,0 -3.42,0 -4.31,-0.03 -0.69,-1.53 -1.02,-4.02 -1.66,-5.39 -0.06,-0.12 -0.09,-0.23 -0.11,-0.32 -1.09,-0.33 -2.13,-0.8 -3.1,-1.36l-0.1 0.05c-2.52,1.46 -3.58,2.04 -5.06,2.89 -0.74,-0.73 -2.43,-2.42 -3.04,-3.07 0.6,-1.57 2.13,-3.56 2.64,-4.98 0.07,-0.18 0.15,-0.31 0.23,-0.39 -0.52,-0.96 -0.94,-1.98 -1.23,-3.06l-0.18 -0.04c-2.82,-0.75 -3.98,-1.1 -5.63,-1.54 0,-1.04 0,-3.42 0.03,-4.31 1.53,-0.69 4.02,-1.02 5.39,-1.66 0.15,-0.07 0.28,-0.11 0.4,-0.12 0.3,-1.09 0.73,-2.13 1.27,-3.11l-0.04 -0.08c-1.46,-2.52 -2.04,-3.58 -2.89,-5.06 0.73,-0.74 2.42,-2.43 3.06,-3.04 1.57,0.6 3.57,2.13 4.99,2.64 0.08,0.03 0.15,0.07 0.22,0.1 1.02,-0.6 2.13,-1.07 3.3,-1.4 0.73,-2.73 1.07,-3.88 1.51,-5.51 1.04,0 3.42,0 4.31,0.02 0.69,1.54 1.02,4.03 1.66,5.4zm-21.43 -13.66l-0.32 0.32 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.79 -0.79 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.79 -0.79 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.79 -0.79 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.79 -0.79 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.79 -0.79 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.79 -0.79 0.78 -0.79 0.79 -0.15 0.15c-3.11,3.12 -6.97,7.34 -7.13,15.65 -0.07,3.62 -1.78,7.16 -4.54,9.93 -3.69,3.68 -8.75,5.14 -13.54,4.38l10.21 -10.2c2.06,-2.06 0.09,-5.61 -0.66,-8.42 -0.28,-1.04 -2.42,-3.12 -3.92,-3.84 -2.69,-1.29 -6.35,-2.79 -8.37,-0.76l-10.24 10.24c-0.76,-4.79 0.7,-9.85 4.38,-13.53 2.71,-2.71 6.15,-4.27 9.69,-4.53 9.01,-0.65 14.34,-4.89 16.32,-6.84l0.09 -0.09 0.31 -0.32 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.79 -0.79 0.79 -0.79 0.79 -0.78 0.78 -0.79 0.15 -0.15c3.11,-3.12 6.98,-7.34 7.14,-15.65 0.07,-3.63 1.77,-7.16 4.54,-9.93 3.69,-3.68 8.75,-5.15 13.53,-4.39l-10.21 10.21c-2.06,2.06 -0.09,5.61 0.67,8.42 0.27,1.04 2.42,3.12 3.92,3.84 2.68,1.29 6.34,2.79 8.37,0.76l10.24 -10.24c0.76,4.78 -0.7,9.85 -4.39,13.53 -2.7,2.71 -6.15,4.27 -9.69,4.53 -9,0.65 -14.34,4.89 -16.31,6.84l-0.09 0.09zm-4.89 -57.08l3.34 3.34c0.61,0.61 0.06,2.29 -0.53,2.93l-10.7 11.6 -3.06 0.19 -3.85 -3.84 3.85 3.84 -31.21 31.2 0.81 0.81c0.68,0.68 0.68,1.79 0,2.47l-0.18 0.19c-0.68,0.67 -1.71,0.76 -2.19,0.28 -0.66,-0.67 -1.5,0.14 -2.1,0.73l-0.77 0.77c1.22,1.92 0.99,4.51 -0.68,6.17l-37.4 37.41c-1.93,1.93 -5.09,1.93 -7.02,0l-3.77 -3.77c-1.93,-1.93 -1.93,-5.09 0,-7.02l37.4 -37.41c1.89,-1.88 4.95,-1.93 6.89,-0.13l0.7 -0.71c0.69,-0.69 1.34,-1.46 0.53,-2.26 -0.49,-0.49 -0.42,-1.53 0.26,-2.21l0.18 -0.19c0.68,-0.68 1.79,-0.68 2.47,0l1.03 1.03 31.2 -31.2 0.11 -3.15 12 -10.37c0.64,-0.55 2.09,-1.3 2.69,-0.7zm-15.1 -39.04l56.7 0c11.69,0 21.26,9.56 21.26,21.26l0 5.69 1.37 0c0.82,0 1.49,0.67 1.49,1.49l0 16.97c0,0.81 -0.67,1.48 -1.49,1.48l-1.37 0 0 4.8 1.37 0c0.82,0 1.49,0.67 1.49,1.49l0 7.47c0,0.82 -0.67,1.49 -1.49,1.49l-1.37 0 0 85.36c0,12.43 -10.18,22.61 -22.62,22.61l-55.34 0c-11.43,0 -20.95,-8.59 -22.41,-19.63 -0.59,-4.4 2.78,-7.67 5.99,-10.53l0 8.8c0,8.48 6.95,15.43 15.43,15.43l57.32 0c8.49,0 15.43,-6.95 15.43,-15.43l0 -127.39c0,-8.49 -6.94,-15.43 -15.43,-15.43l-57.32 0c-8.48,0 -15.43,6.94 -15.43,15.43l0 41.7 -6.19 6.42 0 -46.86c0,-12.44 10.17,-22.62 22.61,-22.62zm-22.61 115.9l0 -25.13 6.19 -6.91 0 26.39 -6.19 5.65zm71.58 -89.57c0.8,-0.04 1.58,0.02 2.34,0.19 1.1,-1.2 1.59,-1.72 2.26,-2.46 0.56,0.29 1.85,0.96 2.32,1.22 -0.06,0.98 -0.54,2.36 -0.6,3.27 0.6,0.54 1.13,1.17 1.56,1.87 1.59,-0.07 2.3,-0.09 3.29,-0.13 0.19,0.6 0.63,1.97 0.78,2.49 -0.74,0.67 -2.08,1.3 -2.76,1.91 0.03,0.81 -0.06,1.61 -0.24,2.37 1.2,1.11 1.72,1.6 2.46,2.27 -0.29,0.56 -0.95,1.85 -1.21,2.32 -1.02,-0.06 -2.45,-0.57 -3.37,-0.61l-0.07 0c-0.5,0.53 -1.08,0.99 -1.72,1.38 0.08,1.73 0.1,2.46 0.14,3.48 -0.6,0.19 -1.97,0.63 -2.49,0.78 -0.68,-0.76 -1.33,-2.14 -1.95,-2.81 -0.05,-0.06 -0.09,-0.11 -0.12,-0.16 -0.69,0 -1.38,-0.07 -2.04,-0.22l-0.05 0.05c-1.19,1.31 -1.69,1.84 -2.39,2.6 -0.56,-0.29 -1.84,-0.95 -2.32,-1.21 0.06,-1.02 0.58,-2.45 0.61,-3.36 0.01,-0.12 0.03,-0.21 0.06,-0.27 -0.48,-0.46 -0.91,-0.97 -1.27,-1.54l-0.11 0.01c-1.77,0.08 -2.5,0.1 -3.54,0.15 -0.19,-0.61 -0.63,-1.98 -0.78,-2.5 0.76,-0.68 2.14,-1.33 2.81,-1.95 0.08,-0.07 0.15,-0.11 0.21,-0.14 -0.03,-0.69 0.03,-1.37 0.17,-2.03l-0.05 -0.04c-1.3,-1.19 -1.83,-1.69 -2.6,-2.39 0.29,-0.56 0.95,-1.84 1.22,-2.31 1.01,0.05 2.45,0.57 3.36,0.6 0.05,0 0.1,0.01 0.14,0.02 0.49,-0.54 1.04,-1.01 1.65,-1.42 -0.08,-1.71 -0.09,-2.44 -0.14,-3.45 0.6,-0.2 1.97,-0.64 2.49,-0.78 0.68,0.75 1.33,2.13 1.95,2.8zm-1.39 3.04c3.18,-1.02 6.59,0.74 7.61,3.93 1.01,3.18 -0.75,6.59 -3.93,7.61 -3.19,1.01 -6.6,-0.75 -7.61,-3.93 -1.02,-3.19 0.74,-6.6 3.93,-7.61zm-9.87 84.48c5.52,0 9.99,4.47 9.99,9.99 0,5.52 -4.47,10 -9.99,10 -5.52,0 -10,-4.48 -10,-10 0,-5.52 4.48,-9.99 10,-9.99z" />
+                        </g>
+                    </svg>
+                </div>
+            </a>
+            <div class="tapadera"></div>
+            <a href="../../index.html"><span
+                    class="navbar-brand mb-0 h1 animate__animated animate__tada">CachinaTec</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+                aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end bg-dark" style="width: 250px;" tabindex="-1" id="offcanvasNavbar"
+                aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header text-white">
+                    <a href="../../index.html">
+                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">CachinaTec</h5>
+                    </a>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#sobre-nosotros">Sobre Nosotros</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#equipo-trabajo">Equipo de Trabajo</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#archivos-actividades">Juegos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="ClaseArray.html">Catalogo de Compra</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="loginform.html">Form de Login</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="offcanvas-footer text-white p-3" style="font-size: 12px;">
+                    <p class="mb-1 ">INSTITUTO DE EDUCACIÓN SUPERIOR “SIMÓN BOLÍVAR”</p>
+                    <p>DESARROLLO DE SISTEMAS DE LA INFORMACIÓN</p>
+                    <br>
+                    <div class="row" style="align-content: center;">
+                        <div class="col-6">
+                            <a href="https://www.institutobolivar.edu.pe" target="_blank">
+                                <img class="rounded-circle" src="Assets/img/LogoBolivar.png" alt="logo Simón Bolívar"
+                                    width="90" height="90">
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <a href="index.html">
+                                <img class="rounded-circle" src="Assets/img/logo.jpg" alt="logo Simón Bolívar"
+                                    width="90" height="90">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="container-fluid bg-dark" id="navegador">
+        <div class="row align-items-center">
+            <div class="col-12 col-lg-6 d-flex justify-content-start">
+                <div class="loading-spinner" id="loading_spinner"></div>
+                <a href="index.html" class="btn  btn-lg rounded-pill text-white" id="btnVolver" style="display: none;">
+                    <i class="fas fa-arrow-left"></i> Volver a la página de inicio
+                </a>
+            </div>
+            <div class="col-12 col-lg-6 d-flex justify-content-end align-items-center">
+                <label style="display: none;">Cursos:</label>
+                <select id="cursoSelect" style="display: none;">
+                    <option value="s1" selected disabled>-- Seleccione su curso --</option>
+                    <option value="s2">Aplicar Efectos a un Objeto</option>
+                    <option value="s3">Aplicar posicionamiento a los objetos</option>
+                    <option value="s4">Inserción de columnas</option>
+                    <option value="s5">Transparencia, Degradados, Animación y SVG</option>
+                    <option value="s6">Aplicar Librerías para Animar Objetos</option>
+                    <option value="s7">JavaScript</option>
+                    <option value="s8">Estructuras y Operadores</option>
+                    <option value="s10">Programación orientada a objetos</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <main class="container flex-grow-1 bg-light-subtle animate__animated" id="ContenedorDePagina" style="opacity: 0;">
+        <div id="subconainerAjedrez">
+            <h2 id="turnIndicator"></h2>
+            <audio id="moveSound" src="../../Assets/media/movimiento2.mp3"></audio>
+            <h2 id="endGameMessage"></h2>
+            <div class="chessboard-container" style="color: white;">
+                        <div class="file-labels top-labels">
+                            <!-- Coordenadas numéricas (1-8) arriba -->
+                            <span>1</span>
+                            <span>2</span>
+                            <span>3</span>
+                            <span>4</span>
+                            <span>5</span>
+                            <span>6</span>
+                            <span>7</span>
+                            <span>8</span>
+                        </div>
+                        <div class="chessboard-with-ranks">
+                            <div class="rank-labels left-labels">
+                                <!-- Coordenadas alfabéticas (A-H) a la izquierda -->
+                                <span>A</span>
+                                <span>B</span>
+                                <span>C</span>
+                                <span>D</span>
+                                <span>E</span>
+                                <span>F</span>
+                                <span>G</span>
+                                <span>H</span>
+                            </div>
+                            <svg width="480px" height="480px" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" style="border: 2px solid;">
+                                <!-- Fila 1 -->
+                                <rect id="A-1" x="0" y="0" class="casilla" width="30" height="30" fill="black"/>
+                                <rect id="A-2" x="30" y="0" class="casilla"  width="30" height="30" fill="white"/>
+                                <rect id="A-3" x="60" y="0" class="casilla"  width="30" height="30" fill="black"/>
+                                <rect id="A-4" x="90" y="0" class="casilla"  width="30" height="30" fill="white"/>
+                                <rect id="A-5" x="120" y="0" class="casilla"  width="30" height="30" fill="black"/>
+                                <rect id="A-6" x="150" y="0" class="casilla" width="30" height="30" fill="white"/>
+                                <rect id="A-7" x="180" y="0" class="casilla"  width="30" height="30" fill="black"/>
+                                <rect id="A-8" x="210" y="0" class="casilla" width="30" height="30" fill="white"/>
+                            
+                                <!-- Fila 2 -->
+                                <rect id="B-1" x="0" y="30" class="casilla" width="30" height="30" fill="white"/>
+                                <rect id="B-2" x="30" y="30" class="casilla" width="30" height="30" fill="black"/>
+                                <rect id="B-3" x="60" y="30" class="casilla" width="30" height="30" fill="white"/>
+                                <rect id="B-4" x="90" y="30" class="casilla" width="30" height="30" fill="black"/>
+                                <rect id="B-5" x="120" y="30" class="casilla" width="30" height="30" fill="white"/>
+                                <rect id="B-6" x="150" y="30" class="casilla" width="30" height="30" fill="black"/>
+                                <rect id="B-7" x="180" y="30" class="casilla" width="30" height="30" fill="white"/>
+                                <rect id="B-8" x="210" y="30" class="casilla" width="30" height="30" fill="black"/>
+                            
+                                <!-- Fila 3 -->
+                                <rect id="C-1" x="0" y="60" class="casilla" width="30" height="30" fill="black"/>
+                                <rect id="C-2" x="30" y="60" class="casilla" width="30" height="30" fill="white"/>
+                                <rect id="C-3" x="60" y="60" class="casilla" width="30" height="30" fill="black"/>
+                                <rect id="C-4" x="90" y="60" class="casilla" width="30" height="30" fill="white"/>
+                                <rect id="C-5" x="120" y="60" class="casilla" width="30" height="30" fill="black"/>
+                                <rect id="C-6" x="150" y="60" class="casilla" width="30" height="30" fill="white"/>
+                                <rect id="C-7" x="180" y="60" class="casilla" width="30" height="30" fill="black"/>
+                                <rect id="C-8" x="210" y="60" class="casilla" width="30" height="30" fill="white"/>
+                            
+                                <!-- Fila 4 -->
+                                <rect id="D-1" x="0" y="90" class="casilla" width="30" height="30" fill="white"/>
+                                <rect id="D-2" x="30" y="90" class="casilla" width="30" height="30" fill="black"/>
+                                <rect id="D-3" x="60" y="90" class="casilla" width="30" height="30" fill="white"/>
+                                <rect id="D-4" x="90" y="90" class="casilla" width="30" height="30" fill="black"/>
+                                <rect id="D-5" x="120" y="90" class="casilla" width="30" height="30" fill="white"/>
+                                <rect id="D-6" x="150" y="90" class="casilla" width="30" height="30" fill="black"/>
+                                <rect id="D-7" x="180" y="90" class="casilla" width="30" height="30" fill="white"/>
+                                <rect id="D-8" x="210" y="90" class="casilla" width="30" height="30" fill="black"/>
+                            
+                                <!-- Fila 5 -->
+                                <rect id="E-1" x="0" y="120" class="casilla" width="30" height="30" fill="black"/>
+                                <rect id="E-2" x="30" y="120" class="casilla" width="30" height="30" fill="white"/>
+                                <rect id="E-3" x="60" y="120" class="casilla" width="30" height="30" fill="black"/>
+                                <rect id="E-4" x="90" y="120" class="casilla" width="30" height="30" fill="white"/>
+                                <rect id="E-5" x="120" y="120" class="casilla" width="30" height="30" fill="black"/>
+                                <rect id="E-6" x="150" y="120" class="casilla" width="30" height="30" fill="white"/>
+                                <rect id="E-7" x="180" y="120" class="casilla" width="30" height="30" fill="black"/>
+                                <rect id="E-8" x="210" y="120" class="casilla" width="30" height="30" fill="white"/>
+                            
+                                <!-- Fila 6 -->
+                                <rect id="F-1" x="0" y="150" class="casilla" width="30" height="30" fill="white"/>
+                                <rect id="F-2" x="30" y="150" class="casilla" width="30" height="30" fill="black"/>
+                                <rect id="F-3" x="60" y="150" class="casilla" width="30" height="30" fill="white"/>
+                                <rect id="F-4" x="90" y="150" class="casilla" width="30" height="30" fill="black"/>
+                                <rect id="F-5" x="120" y="150" class="casilla" width="30" height="30" fill="white"/>
+                                <rect id="F-6" x="150" y="150" class="casilla" width="30" height="30" fill="black"/>
+                                <rect id="F-7" x="180" y="150" class="casilla" width="30" height="30" fill="white"/>
+                                <rect id="F-8" x="210" y="150" class="casilla" width="30" height="30" fill="black"/>
+                            
+                                <!-- Fila 7 -->
+                                <rect id="G-1"  x="0" y="180" class="casilla" width="30" height="30" fill="black"/>
+                                <rect id="G-2" x="30" y="180" class="casilla" width="30" height="30" fill="white"/>
+                                <rect id="G-3" x="60" y="180" class="casilla" width="30" height="30" fill="black"/>
+                                <rect id="G-4" x="90" y="180" class="casilla" width="30" height="30" fill="white"/>
+                                <rect id="G-5" x="120" y="180" class="casilla" width="30" height="30" fill="black"/>
+                                <rect id="G-6" x="150" y="180" class="casilla" width="30" height="30" fill="white"/>
+                                <rect id="G-7" x="180" y="180" class="casilla" width="30" height="30" fill="black"/>
+                                <rect id="G-8" x="210" y="180" class="casilla" width="30" height="30" fill="white"/>
+                            
+                                <!-- Fila 8 -->
+                                <rect id="H-1" x="0" y="210" class="casilla" width="30" height="30" fill="white"/>
+                                <rect id="H-2" x="30" y="210" class="casilla" width="30" height="30" fill="black"/>
+                                <rect id="H-3" x="60" y="210" class="casilla" width="30" height="30" fill="white"/>
+                                <rect id="H-4" x="90" y="210" class="casilla" width="30" height="30" fill="black"/>
+                                <rect id="H-5" x="120" y="210" class="casilla" width="30" height="30" fill="white"/>
+                                <rect id="H-6" x="150" y="210" class="casilla" width="30" height="30" fill="black"/>
+                                <rect id="H-7" x="180" y="210" class="casilla" width="30" height="30" fill="white"/>
+                                <rect id="H-8" x="210" y="210" class="casilla" width="30" height="30" fill="black"/>
+                
+                            <!--Torres Negras-->
+                            <image id="torre_black_uno" class="piece not-moved torre-black black" href="../../Assets/svg/fichas/torre_black.svg" x="0" y="0" width="30" height="30" />
+                            <image id="torre_black_dos" class="piece not-moved torre-black black" href="../../Assets/svg/fichas/torre_black.svg" x="210" y="0" width="30" height="30" />
+                            <!--Caballos Negras-->
+                            <image id="caballo_black_uno" class="piece caballo-black black" href="../../Assets/svg/fichas/caballo_black.svg" x="30" y="0" width="30" height="30" />
+                            <image id="caballo_black_dos" class="piece caballo-black black" href="../../Assets/svg/fichas/caballo_black.svg" x="180" y="0" width="30" height="30" />
+                            <!--Alfiles Negras-->
+                            <image id="alfil_black_uno" class="piece alfil-black black" href="../../Assets/svg/fichas/alfil_black.svg" x="60" y="0" width="30" height="30" />
+                            <image id="alfil_black_dos" class="piece alfil-black black" href="../../Assets/svg/fichas/alfil_black.svg" x="150" y="0" width="30" height="30" />
+                            <!--Reyes Negras-->
+                            <image id="rey_black" class="piece not-moved rey-black black" href="../../Assets/svg/fichas/rey_black.svg" x="90" y="0" width="30" height="30" />
+                            <image id="reina_black" class="piece reina-black black" href="../../Assets/svg/fichas/reina_black.svg" x="120" y="0" width="30" height="30" />
+                
+                            <!--Fila de Peones negros-->
+                            <image id="peon_black_uno" class="piece peon peon-black black not-moved" href="../../Assets/svg/fichas/peon_black.svg" x="0" y="30" width="30" height="30" />
+                            <image id="peon_black_dos" class="piece peon peon-black black not-moved" href="../../Assets/svg/fichas/peon_black.svg" x="30" y="30" width="30" height="30" />
+                            <image id="peon_black_tres" class="piece peon peon-black black not-moved" href="../../Assets/svg/fichas/peon_black.svg" x="60" y="30" width="30" height="30" />
+                            <image id="peon_black_cuatro" class="piece peon peon-black black not-moved" href="../../Assets/svg/fichas/peon_black.svg" x="90" y="30" width="30" height="30" />
+                            <image id="peon_black_cinco" class="piece peon peon-black black not-moved" href="../../Assets/svg/fichas/peon_black.svg" x="120" y="30" width="30" height="30" />
+                            <image id="peon_black_seis" class="piece peon peon-black black not-moved" href="../../Assets/svg/fichas/peon_black.svg" x="150" y="30" width="30" height="30" />
+                            <image id="peon_black_siete" class="piece peon peon-black black not-moved" href="../../Assets/svg/fichas/peon_black.svg" x="180" y="30" width="30" height="30" />
+                            <image id="peon_black_ocho" class="piece peon peon-black black not-moved" href="../../Assets/svg/fichas/peon_black.svg" x="210" y="30" width="30" height="30" />
+                
+                
+                
+                            <!--Torres blancas-->
+                            <image id="torre_white_uno" class="piece not-moved torre-white white" href="../../Assets/svg/fichas/torre_white.svg" x="0" y="210" width="30" height="30" />
+                            <image id="torre_white_dos" class="piece not-moved torre-white white" href="../../Assets/svg/fichas/torre_white.svg" x="210" y="210" width="30" height="30" />
+                            <!--Caballos blancas-->
+                            <image id="caballo_white_uno"  class="piece caballo-white white" href="../../Assets/svg/fichas/caballo_white.svg" x="30" y="210" width="30" height="30" />
+                            <image id="caballo_white_dos" class="piece caballo-white white" href="../../Assets/svg/fichas/caballo_white.svg" x="180" y="210" width="30" height="30" />
+                            <!--Alfiles blancas-->
+                            <image id="alfil_white_uno" class="piece alfil-white white" href="../../Assets/svg/fichas/alfil_white.svg" x="60" y="210" width="30" height="30" />
+                            <image id="alfil_white_dos" class="piece alfil-white white" href="../../Assets/svg/fichas/alfil_white.svg" x="150" y="210" width="30" height="30" />
+                            <!--Reyes blancas-->
+                            <image id="rey_white" class="piece not-moved rey-white white" href="../../Assets/svg/fichas/rey_white.svg" x="90" y="210" width="30" height="30" />
+                            <image id="reina_white" class="piece reina-white white" href="../../Assets/svg/fichas/reina_white.svg" x="120" y="210" width="30" height="30" />
+                
+                            <!--Fila de Peones blanco-->
+                            <image id="peon_white_uno" class="piece peon peon-white white not-moved" href="../../Assets/svg/fichas/peon_white.svg" x="0" y="180" width="30" height="30" />
+                            <image id="peon_white_dos" class="piece peon peon-white white not-moved" href="../../Assets/svg/fichas/peon_white.svg" x="30" y="180" width="30" height="30" />
+                            <image id="peon_white_tres" class="piece peon peon-white white not-moved" href="../../Assets/svg/fichas/peon_white.svg" x="60" y="180" width="30" height="30" />
+                            <image id="peon_white_cuatro" class="piece peon  peon-white white not-moved" href="../../Assets/svg/fichas/peon_white.svg" x="90" y="180" width="30" height="30" />
+                            <image id="peon_white_cinco" class="piece peon peon-white white not-moved" href="../../Assets/svg/fichas/peon_white.svg" x="120" y="180" width="30" height="30" />
+                            <image id="peon_white_seis" class="piece peon peon-white white not-moved" href="../../Assets/svg/fichas/peon_white.svg" x="150" y="180" width="30" height="30" />
+                            <image id="peon_white_siete" class="piece peon peon-white white not-moved" href="../../Assets/svg/fichas/peon_white.svg" x="180" y="180" width="30" height="30" />
+                            <image id="peon_white_ocho" class="piece peon peon-white white not-moved" href="../../Assets/svg/fichas/peon_white.svg" x="210" y="180" width="30" height="30" />
+                            </svg> 
+                            <div class="rank-labels right-labels">
+                                <!-- Coordenadas alfabéticas (A-H) a la derecha -->
+                                <span>A</span>
+                                <span>B</span>
+                                <span>C</span>
+                                <span>D</span>
+                                <span>E</span>
+                                <span>F</span>
+                                <span>G</span>
+                                <span>H</span>
+                            </div>
+                        </div>
+                        <div class="file-labels bottom-labels">
+                            <!-- Coordenadas numéricas (1-8) abajo -->
+                            <span>1</span>
+                            <span>2</span>
+                            <span>3</span>
+                            <span>4</span>
+                            <span>5</span>
+                            <span>6</span>
+                            <span>7</span>
+                            <span>8</span>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="promotionModal" tabindex="-1" aria-labelledby="promotionModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="promotionModalLabel">Promoción del Peón</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Elige una pieza para la promoción:</p>
+                                    <img class="promotion-option" data-piece="reina" width="30" height="30" src="../../Assets/svg/fichas/reina_white.svg" />
+                                    <img class="promotion-option" data-piece="torre" width="30" height="30" src="../../Assets/svg/fichas/torre_white.svg" />
+                                    <img class="promotion-option" data-piece="alfil" width="30" height="30" src="../../Assets/svg/fichas/alfil_white.svg" />
+                                    <img class="promotion-option" data-piece="caballo" width="30" height="30" src="../../Assets/svg/fichas/caballo_white.svg" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+        </div>
+    </div>
+    </main>
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>&copy; 2023 CachinaTec.</h5>
+                    <p>Información adicional del sitio.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Enlaces útiles</h5>
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a href="#" class="nav-link text-white">Inicio</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link text-white">Sobre nosotros</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link text-white">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contacto</h5>
+                    <p>cachinatec@gmail.com</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="Assets/js/maps.js"></script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDaeWicvigtP9xPv919E-RNoxfvC-Hqik&callback=iniciarMap"></script>
+    <script src="../../Assets/Librerias/Boostrap/js/bootstrap.min.js"></script>
+    <script src="../../Assets/js/script.js"></script>
+    <script src="../../Assets/js/CursosSwich.js"></script>
+    <script src="https://kit.fontawesome.com/5391b865ab.js" crossorigin="anonymous"></script>
+    <script src="../../scripts/logo.js"></script>
+    <script src="../../scripts/script.js"></script>
+    <script>
+        $(document).ready(function() {
+             var currentTurn = 'white'; 
+ 
+             function updateTurnDisplay() {
+                 var turnText = currentTurn === 'white' ? 'Turno de Blancas' : 'Turno de Negras';
+                 $('#turnIndicator').text(turnText);
+                 if (currentTurn === 'white') {
+                     $('#turnIndicator').removeClass('turn-black').css('color', 'white');
+                 } else {
+                     $('#turnIndicator').addClass('turn-black').css('color', 'white');
+                 }
+             }
+ 
+             function changeTurn() {
+                 var enemyColor = currentTurn === 'white' ? 'black' : 'white';
+                 var kingPosition = findKingPosition(currentTurn);
+ 
+                 if (isSquareUnderAttack(kingPosition.x, kingPosition.y, enemyColor)) {
+                     // Si está en jaque, verifica si es jaque mate
+                     if (isCheckmate(kingPosition, currentTurn)) {
+                         alert('Jaque Mate');
+                         endGame();
+                     } else {
+                         alert('Jaque');
+                     }
+                 }
+ 
+                 currentTurn = enemyColor;
+ 
+                 updateTurnDisplay();
+                 updateClickablePieces();
+             }
+ 
+             function calculateKingMoves(king) {
+                 var legalMoves = [];
+                 var currentX = parseInt(king.attr('x'));
+                 var currentY = parseInt(king.attr('y'));
+                 var enemyColor = currentTurn === 'white' ? 'black' : 'white';
+ 
+                 // El rey puede moverse una casilla en cualquier dirección
+                 var potentialMoves = [
+                     { dx: -30, dy: -30 },
+                     { dx: 0, dy: -30 },
+                     { dx: 30, dy: -30 },
+                     { dx: -30, dy: 0 },
+                     { dx: 30, dy: 0 },
+                     { dx: -30, dy: 30 },
+                     { dx: 0, dy: 30 },
+                     { dx: 30, dy: 30 }
+                 ];
+ 
+                 potentialMoves.forEach(function(move) {
+                     var newX = currentX + move.dx;
+                     var newY = currentY + move.dy;
+                     if (newX >= 0 && newX <= 210 && newY >= 0 && newY <= 210) {
+                         // Solo agrega el movimiento si la casilla no está bajo ataque
+                         if (!isSquareUnderAttack(newX, newY, enemyColor) && (isSquareEmpty(newX, newY) || isEnemyPiece(newX, newY))) {
+                             legalMoves.push({ x: newX, y: newY });
+                         }
+                     }
+                 });
+ 
+                 return legalMoves;
+             }
+             function isCheckmate(kingPosition, color) {
+                 var legalMoves = calculateKingMoves($('image.piece.rey-' + color));
+                 var oppositeColor = color === 'white' ? 'black' : 'white';
+ 
+                 if (legalMoves.length === 0) {
+                     return false;
+                 }
+ 
+                 var kingIsCheckmated = legalMoves.every(function(move) {
+                     return isSquareUnderAttack(move.x, move.y, oppositeColor);
+                 });
+ 
+                 return kingIsCheckmated;
+             }
+ 
+             function updateClickablePieces() {
+                 // Deshabilita el evento de clic para las piezas que no están en el turno actual
+                 $('.piece').off('click').removeClass('clickable');
+                 // Habilita el evento de clic para las piezas del turno actual
+                 $('.' + currentTurn).addClass('clickable').on('click', pieceClickHandler);
+             }
+ 
+             function pieceClickHandler() {
+                 var selectedPiece = $(this);
+                 if(selectedPiece.hasClass('peon-' + currentTurn)) {
+                     showPawnMoves(selectedPiece);
+                 } else if(selectedPiece.hasClass('torre-' + currentTurn)) {
+                     showRookMoves(selectedPiece);
+                 } else if(selectedPiece.hasClass('caballo-' + currentTurn)) {
+                     showHorsetMoves(selectedPiece);
+                 } else if(selectedPiece.hasClass('rey-' + currentTurn)) {
+                     showKingMoves(selectedPiece);
+                 } else if(selectedPiece.hasClass('alfil-' + currentTurn)) {
+                     showBishopMoves(selectedPiece);
+                 }else if(selectedPiece.hasClass('reina-' + currentTurn)) {
+                     showQueenMoves(selectedPiece);
+                 }
+             }
+ 
+             function showPawnMoves(pawn) {
+                 var currentX = parseInt(pawn.attr('x'));
+                 var currentY = parseInt(pawn.attr('y'));
+                 var moveDirection = currentTurn === 'white' ? -30 : 30;
+                 var attackDirections = [30, -30]; // Diagonal derecha e izquierda
+ 
+                 clearHighlights(); // Limpiar resaltados anteriores
+ 
+                 // Mover una casilla adelante si está vacía
+                 if(isSquareEmpty(currentX, currentY + moveDirection)) {
+                     highlightMove(currentX, currentY + moveDirection, pawn);
+                 }
+ 
+                 // Mover dos casillas adelante si está vacía y el peón no se ha movido
+                 if(pawn.hasClass('not-moved') && isSquareEmpty(currentX, currentY + moveDirection) && isSquareEmpty(currentX, currentY + (2 * moveDirection))) {
+                     highlightMove(currentX, currentY + (2 * moveDirection), pawn);
+                 }
+ 
+                 // Atacar en diagonal si hay una pieza enemiga
+                 attackDirections.forEach(function(attackDirection) {
+                     if(isEnemyPiece(currentX + attackDirection, currentY + moveDirection)) {
+                         highlightAttack(currentX + attackDirection, currentY + moveDirection, pawn);
+                     }
+                 });
+             }
+ 
+             function showRookMoves(rook) {
+                 var currentX = parseInt(rook.attr('x'));
+                 var currentY = parseInt(rook.attr('y'));
+ 
+                 clearHighlights();
+ 
+                 // Mover horizontalmente en la fila hacia la derecha e izquierda
+                 [1, -1].forEach(function(direction) {
+                     for (var i = 30; i <= 210; i += 30) {
+                         var newX = currentX + (i * direction);
+                         if (newX >= 0 && newX <= 210) {
+                             if (isSquareEmpty(newX, currentY) || isEnemyPiece(newX, currentY)) {
+                                 highlightMove(newX, currentY, rook);
+                                 if (!isSquareEmpty(newX, currentY)) {
+                                     break; // Una pieza bloquea el camino o es una pieza enemiga
+                                 }
+                             } else {
+                                 break; // Una pieza bloquea el camino
+                             }
+                         }
+                     }
+                 });
+ 
+                 // Mover verticalmente en la columna hacia arriba y abajo
+                 [1, -1].forEach(function(direction) {
+                     for (var j = 30; j <= 210; j += 30) {
+                         var newY = currentY + (j * direction);
+                         if (newY >= 0 && newY <= 210) {
+                             if (isSquareEmpty(currentX, newY) || isEnemyPiece(currentX, newY)) {
+                                 highlightMove(currentX, newY, rook);
+                                 if (!isSquareEmpty(currentX, newY)) {
+                                     break; // Una pieza bloquea el camino o es una pieza enemiga
+                                 }
+                             } else {
+                                 break; // Una pieza bloquea el camino
+                             }
+                         }
+                     }
+                 });
+             
+             }
+             
+             function showHorsetMoves(horse) {
+                 var currentX = parseInt(horse.attr('x'));
+                 var currentY = parseInt(horse.attr('y'));
+                 var potentialMoves = [
+                     { x: currentX + 30, y: currentY + 60 },
+                     { x: currentX + 60, y: currentY + 30 },
+                     { x: currentX + 60, y: currentY - 30 },
+                     { x: currentX + 30, y: currentY - 60 },
+                     { x: currentX - 30, y: currentY - 60 },
+                     { x: currentX - 60, y: currentY - 30 },
+                     { x: currentX - 60, y: currentY + 30 },
+                     { x: currentX - 30, y: currentY + 60 }
+                 ];
+ 
+                 clearHighlights();
+ 
+                 potentialMoves.forEach(function(move) {
+                     if (move.x >= 0 && move.x <= 210 && move.y >= 0 && move.y <= 210) {
+                         if (isSquareEmpty(move.x, move.y) || isEnemyPiece(move.x, move.y)) {
+                             highlightMove(move.x, move.y, horse);
+                         }
+                     }
+                 });
+                 
+                
+             }
+ 
+             function showBishopMoves(bishop) {
+                 var currentX = parseInt(bishop.attr('x'));
+                 var currentY = parseInt(bishop.attr('y'));
+ 
+                 clearHighlights();
+ 
+                 // Hay cuatro direcciones diagonales para verificar: superior izquierda, superior derecha, inferior izquierda, inferior derecha
+                 var directions = [
+                     { dx: -30, dy: -30 },
+                     { dx: 30, dy: -30 },
+                     { dx: -30, dy: 30 },
+                     { dx: 30, dy: 30 }
+                 ];
+ 
+                 directions.forEach(function(direction) {
+                     // Revisa cada dirección hasta el final del tablero o hasta que encuentres una pieza
+                     var newX = currentX + direction.dx;
+                     var newY = currentY + direction.dy;
+                     while (newX >= 0 && newX <= 210 && newY >= 0 && newY <= 210) {
+                         if (isSquareEmpty(newX, newY)) {
+                             highlightMove(newX, newY, bishop);
+                             newX += direction.dx;
+                             newY += direction.dy;
+                         } else {
+                             // Si hay una pieza enemiga, resáltala y luego rompe el bucle
+                             if (isEnemyPiece(newX, newY)) {
+                                 highlightMove(newX, newY, bishop);
+                             }
+                             break;
+                         }
+                     }
+                 });
+             }
+             function showKingMoves(king) {
+                 var currentX = parseInt(king.attr('x'));
+                 var currentY = parseInt(king.attr('y'));
+ 
+                 var enemyColor = currentTurn === 'white' ? 'black' : 'white';
+ 
+                 clearHighlights();
+ 
+                 // El rey puede moverse una casilla en cualquier dirección, así que hay 8 posibles movimientos
+                 var possibleMoves = [
+                     { dx: -30, dy: -30 },
+                     { dx: 0, dy: -30 },
+                     { dx: 30, dy: -30 },
+                     { dx: -30, dy: 0 },
+                     { dx: 30, dy: 0 },
+                     { dx: -30, dy: 30 },
+                     { dx: 0, dy: 30 },
+                     { dx: 30, dy: 30 }
+                 ];
+ 
+                 possibleMoves.forEach(function(move) {
+                     var newX = currentX + move.dx;
+                     var newY = currentY + move.dy;
+ 
+                     if (newX >= 0 && newX <= 210 && newY >= 0 && newY <= 210) {
+                         // Solo resaltar si la casilla no está bajo ataque
+                          if (!isSquareUnderAttack(newX, newY, enemyColor)) {
+                             highlightMove(newX, newY, king);
+                         }
+                     }
+                 });
+ 
+                 if (king.hasClass('not-moved') && !isSquareUnderAttack(currentX, currentY, enemyColor)) {
+                     // Enroque corto
+                     if ($('.torre[x="210"][y="' + currentY + '"]').hasClass('not-moved') && 
+                         isSquareEmpty(currentX + 30, currentY) && isSquareEmpty(currentX + 60, currentY) &&
+                         !isSquareUnderAttack(currentX + 30, currentY, enemyColor) && 
+                         !isSquareUnderAttack(currentX + 60, currentY, enemyColor)) {
+                         highlightCastleMove(currentX + 60, currentY, king, 'short');
+                     }
+ 
+                     // Enroque largo
+                     if ($('.torre[x="0"][y="' + currentY + '"]').hasClass('not-moved') && 
+                         isSquareEmpty(currentX - 30, currentY) && isSquareEmpty(currentX - 60, currentY) && 
+                         isSquareEmpty(currentX - 90, currentY) && !isSquareUnderAttack(currentX - 30, currentY, enemyColor) &&
+                         !isSquareUnderAttack(currentX - 60, currentY, enemyColor)) {
+                         highlightCastleMove(currentX - 90, currentY, king, 'long');
+                     }
+                 }
+             }
+             function highlightCastleMove(x, y, king, castleType) {
+                 var targetSquare = $('rect[x="' + x + '"][y="' + y + '"]');
+                 targetSquare.addClass('highlight').on('click', function() {
+                     performCastle(king, castleType);
+                 });
+             }
+ 
+             function performCastle(king, castleType) {
+                 var kingX = parseInt(king.attr('x'));
+                 var kingY = parseInt(king.attr('y'));
+                 var rookX = castleType === 'short' ? 210 : 0;
+                 var rook = $('image.piece.torre[x="' + rookX + '"][y="' + kingY + '"]');
+ 
+                 // Asegúrate de que ni el rey ni la torre han movido antes
+                 if (!king.hasClass('not-moved') || !rook.hasClass('not-moved')) {
+                     console.error('Enroque no válido: El rey o la torre ya han movido.');
+                     return; // No realizar el enroque si ya se han movido
+                 }
+ 
+                 // Calcula las nuevas posiciones del rey y la torre después del enroque
+                 var newKingX = castleType === 'short' ? kingX + 60 : kingX - 90;
+                 var newRookX = castleType === 'short' ? newKingX - 30 : newKingX + 30;
+ 
+                 // Comprueba que las casillas entre el rey y la torre están vacías
+                 var pathClear = isPathClear(kingX, kingY, rookX, kingY);
+                 if (!pathClear) {
+                     console.error('Enroque no válido: Hay piezas entre el rey y la torre.');
+                     return; // No realizar el enroque si hay piezas entre el rey y la torre
+                 }
+ 
+                 // Comprueba que el rey no está en jaque y no pasará por ninguna casilla atacada
+                 var enemyColor = king.hasClass('white') ? 'black' : 'white';
+                 if (isSquareUnderAttack(kingX, kingY, enemyColor) || 
+                     isSquareUnderAttack(newKingX, kingY, enemyColor) || 
+                     isSquareUnderAttack((kingX + newKingX) / 2, kingY, enemyColor)) {
+                     console.error('Enroque no válido: El rey está en jaque o pasaría por una casilla atacada.');
+                     return; // No realizar el enroque si el rey está en jaque o pasaría por una casilla atacada
+                 }
+ 
+                 // Mueve el rey y la torre a sus nuevas posiciones
+                 movePiece(king, newKingX, kingY);
+                 movePiece(rook, newRookX, kingY);
+ 
+                 // Marca al rey y la torre como que ya han movido
+                 king.removeClass('not-moved');
+                 rook.removeClass('not-moved');
+ 
+                 // Actualiza el tablero y cambia el turno
+                 clearHighlights();
+                 changeTurn();
+             }
+ 
+             function isPathClear(x1, y1, x2, y2) {
+                 var pathClear = true;
+                 var minX = Math.min(x1, x2);
+                 var maxX = Math.max(x1, x2);
+                 
+                 for (var x = minX + 30; x < maxX; x += 30) {
+                     if (!isSquareEmpty(x, y1)) {
+                         pathClear = false;
+                         break;
+                     }
+                 }
+                 return pathClear;
+             }
+ 
+             function showQueenMoves(queen) {
+                 var currentX = parseInt(queen.attr('x'));
+                 var currentY = parseInt(queen.attr('y'));
+                 clearHighlights();
+ 
+                 // Define las direcciones en las que la reina puede moverse
+                 var directions = [
+                     { dx: 1, dy: 0 }, { dx: -1, dy: 0 }, // Horizontal
+                     { dx: 0, dy: 1 }, { dx: 0, dy: -1 }, // Vertical
+                     { dx: 1, dy: 1 }, { dx: -1, dy: -1 }, // Diagonal derecha
+                     { dx: -1, dy: 1 }, { dx: 1, dy: -1 }  // Diagonal izquierda
+                 ];
+ 
+                 directions.forEach(function(dir) {
+                     for (var i = 30; i <= 210; i += 30) {
+                         var newX = currentX + (i * dir.dx);
+                         var newY = currentY + (i * dir.dy);
+ 
+                         // Verificar si la nueva posición está fuera del tablero
+                         if (newX < 0 || newX > 210 || newY < 0 || newY > 210) {
+                             break;
+                         }
+ 
+                         var squareEmpty = isSquareEmpty(newX, newY);
+                         var enemyPiece = isEnemyPiece(newX, newY);
+ 
+                         if (squareEmpty) {
+                             highlightMove(newX, newY, queen);
+                         } else {
+                             if (enemyPiece) {
+                                 highlightMove(newX, newY, queen);
+                             }
+                             // Si no está vacío o si hay una pieza enemiga, detenerse
+                             break;
+                         }
+                     }
+                 });
+             }
+ 
+             function highlightMove(x, y, piece) {
+                 var targetSquare = $('rect[x="' + x + '"][y="' + y + '"]');
+                 var enemyPiece = $('image.piece[x="' + x + '"][y="' + y + '"]');
+                 
+                 if (isSquareEmpty(x, y) || isEnemyPiece(x, y)) {
+                     // Resalta la casilla
+                     targetSquare.addClass('highlight').on('click', function() {
+                         movePiece(piece, x, y);
+                     });
+                     // Si hay una pieza enemiga, también resáltala
+                     if (enemyPiece.length > 0 && !enemyPiece.hasClass(currentTurn)) {
+                         enemyPiece.addClass('highlight').on('click', function() {
+                             attack(piece, x, y);
+                         });
+                     }
+                 }
+             }
+ 
+             function highlightAttack(x, y, piece) {
+                 if(isEnemyPiece(x, y)) {
+                     $('image[x="' + x + '"][y="' + y + '"]').addClass('highlight').on('click', function() {
+                         attack(piece, x, y);
+                     });
+                 }
+             }
+ 
+             function isSquareEmpty(x, y) {
+                 return $('image[x="' + x + '"][y="' + y + '"]').length === 0;
+             }
+ 
+             function isEnemyPiece(x, y) {
+                 var piece = $('image[x="' + x + '"][y="' + y + '"]');
+                 return piece.length > 0 && !piece.hasClass(currentTurn);
+             }
+ 
+             function movePiece(piece, x, y) {
+                 $('#moveSound')[0].play();
+                 piece.attr({'x': x, 'y': y});
+                 piece.removeClass('not-moved');
+ 
+                 clearHighlights();
+ 
+                 if (piece.hasClass('peon') && ((currentTurn === 'white' && y === 0) || (currentTurn === 'black' && y === 210))) {
+                     handlePawnPromotion(piece);
+                 } else {
+                     changeTurn();
+                 }
+             }
+ 
+             function attack(piece, x, y) {
+                 var enemyPiece = $('image[x="' + x + '"][y="' + y + '"]');
+                 if (enemyPiece.length > 0) {
+                     if (enemyPiece.hasClass('rey-black') || enemyPiece.hasClass('rey-white')) {
+                         // Eliminar la pieza enemiga
+                         enemyPiece.remove();
+                         movePiece(piece, x, y);
+                         $('.piece').off('click').removeClass('clickable');
+                         endGame()
+                     } else {
+                         enemyPiece.remove();
+                         movePiece(piece, x, y);
+                     }
+                 }
+             }
+             function isSquareUnderAttack(x, y, attackingColor) {
+                 // Verificar si algún peón enemigo ataca la casilla
+                 if (isPawnAttacking(x, y, attackingColor)) {
+                     return true;
+                 }
+ 
+                 // Verificar si alguna torre enemiga ataca la casilla
+                 if (isRookAttacking(x, y, attackingColor)) {
+                     return true;
+                 }
+ 
+                 // Verificar si algún caballo enemigo ataca la casilla
+                 if (isKnightAttacking(x, y, attackingColor)) {
+                     return true;
+                 }
+ 
+                 // Verificar si algún alfil enemigo ataca la casilla
+                 if (isBishopAttacking(x, y, attackingColor)) {
+                     return true;
+                 }
+ 
+                 // Verificar si alguna reina enemiga ataca la casilla
+                 if (isQueenAttacking(x, y, attackingColor)) {
+                     return true;
+                 }
+ 
+                 // Verificar si algún rey enemigo ataca la casilla
+                 if (isKingAttacking(x, y, attackingColor)) {
+                     return true;
+                 }
+ 
+                 return false;
+             }
+             
+             function isPawnAttacking(x, y, attackingColor) {
+                 var attackOffsets = attackingColor === 'white' ? [{dx: -30, dy: -30}, {dx: 30, dy: -30}] : [{dx: -30, dy: 30}, {dx: 30, dy: 30}];
+ 
+                 for (var offset of attackOffsets) {
+                     var piece = $('image.piece[x="' + (x + offset.dx) + '"][y="' + (y + offset.dy) + '"]');
+                     if (piece.length > 0 && piece.hasClass('peon-' + attackingColor)) {
+                         return true;
+                     }
+                 }
+                 return false;
+             }
+             function isRookAttacking(x, y, attackingColor) {
+                 var directions = [{dx: 0, dy: -30}, {dx: 0, dy: 30}, {dx: -30, dy: 0}, {dx: 30, dy: 0}];
+                 return checkLinearAttack(x, y, directions, 'torre-' + attackingColor);
+             }
+             function isKnightAttacking(x, y, attackingColor) {
+                 var knightMoves = [{dx: 60, dy: 30}, {dx: 60, dy: -30}, {dx: -60, dy: 30}, {dx: -60, dy: -30}, {dx: 30, dy: 60}, {dx: -30, dy: 60}, {dx: 30, dy: -60}, {dx: -30, dy: -60}];
+ 
+                 for (var move of knightMoves) {
+                     var piece = $('image.piece[x="' + (x + move.dx) + '"][y="' + (y + move.dy) + '"]');
+                     if (piece.length > 0 && piece.hasClass('caballo-' + attackingColor)) {
+                         return true;
+                     }
+                 }
+                 return false;
+             }
+             function isBishopAttacking(x, y, attackingColor) {
+                 var directions = [{dx: 30, dy: 30}, {dx: 30, dy: -30}, {dx: -30, dy: 30}, {dx: -30, dy: -30}];
+                 return checkLinearAttack(x, y, directions, 'alfil-' + attackingColor);
+             }
+             function isQueenAttacking(x, y, attackingColor) {
+                 return isRookAttacking(x, y, attackingColor) || isBishopAttacking(x, y, attackingColor);
+             }
+             function isKingAttacking(x, y, attackingColor) {
+                 var kingMoves = [{dx: 30, dy: 0}, {dx: -30, dy: 0}, {dx: 0, dy: 30}, {dx: 0, dy: -30}, {dx: 30, dy: 30}, {dx: 30, dy: -30}, {dx: -30, dy: 30}, {dx: -30, dy: -30}];
+ 
+                 for (var move of kingMoves) {
+                     var piece = $('image.piece[x="' + (x + move.dx) + '"][y="' + (y + move.dy) + '"]');
+                     if (piece.length > 0 && piece.hasClass('rey-' + attackingColor)) {
+                         return true;
+                     }
+                 }
+                 return false;
+             }
+             function checkLinearAttack(x, y, directions, pieceClass) {
+                 for (var direction of directions) {
+                     var newX = x + direction.dx;
+                     var newY = y + direction.dy;
+                     while (newX >= 0 && newX <= 210 && newY >= 0 && newY <= 210) {
+                         var piece = $('image.piece[x="' + newX + '"][y="' + newY + '"]');
+                         if (piece.length > 0) {
+                             if (piece.hasClass(pieceClass)) {
+                                 return true;
+                             }
+                             break; // Hay una pieza bloqueando el camino
+                         }
+                         newX += direction.dx;
+                         newY += direction.dy;
+                     }
+                 }
+                 return false;
+             }
+             function findKingPosition(color) {
+                 var king = $('image.piece.rey-' + color);
+                 if (king.length > 0) {
+                     return { x: parseInt(king.attr('x')), y: parseInt(king.attr('y')) };
+                 } else {
+                     // Manejo del error si no se encuentra el rey
+                     console.error('Rey no encontrado para el color: ' + color);
+                     return null;
+                 }
+             }
+ 
+             function clearHighlights() {
+                 $('.highlight').removeClass('highlight').off('click');
+             }
+             $('.promotion-option').on('click', function() {
+                 var selectedPieceType = $(this).data('piece');
+                 var promotedPawn = $('.pawn-to-promote');
+                 var newPieceImage = 'Assets/svg/fichas/' + selectedPieceType + '_' + currentTurn + '.svg';
+ 
+                 var pawnElement = promotedPawn.get(0);
+ 
+                 if (pawnElement) {
+                     pawnElement.href.baseVal = newPieceImage;
+                     promotedPawn.removeClass('peon').removeClass('peon-' + currentTurn).removeClass('pawn-to-promote').addClass(selectedPieceType).addClass(selectedPieceType + '-' + currentTurn);
+                 } else {
+                     console.error("El peón promocionado no se encontró en el DOM.");
+                 }
+                 console.log("Pieza promocionada después de actualizar:", promotedPawn);
+                 $('#promotionModal').modal('hide');
+                 changeTurn();
+             });
+ 
+             function handlePawnPromotion(piece) {
+                 piece.addClass('pawn-to-promote');
+                 $('#promotionModal').modal('show');
+             }
+ 
+             function resetBoard() {
+                 // Eliminar todas las piezas actuales del tablero
+                 $('.piece').remove();
+                 
+                 // Definir las posiciones iniciales de las piezas en el tablero
+                 var initialPositions = [
+                     // Torres
+                     { type: 'torre', color: 'white', x: 0, y: 210, class: 'not-moved' },
+                     { type: 'torre', color: 'white', x: 210, y: 210, class: 'not-moved' },
+                     { type: 'torre', color: 'black', x: 0, y: 0, class: 'not-moved' },
+                     { type: 'torre', color: 'black', x: 210, y: 0, class: 'not-moved' },
+                     // Caballos
+                     { type: 'caballo', color: 'white', x: 30, y: 210 },
+                     { type: 'caballo', color: 'white', x: 180, y: 210 },
+                     { type: 'caballo', color: 'black', x: 30, y: 0 },
+                     { type: 'caballo', color: 'black', x: 180, y: 0 },
+                     // Alfiles
+                     { type: 'alfil', color: 'white', x: 60, y: 210 },
+                     { type: 'alfil', color: 'white', x: 150, y: 210 },
+                     { type: 'alfil', color: 'black', x: 60, y: 0 },
+                     { type: 'alfil', color: 'black', x: 150, y: 0 },
+                     // Reinas
+                     { type: 'reina', color: 'white', x: 120, y: 210 },
+                     { type: 'reina', color: 'black', x: 120, y: 0 },
+                     // Reyes
+                     { type: 'rey', color: 'white', x: 90, y: 210, class: 'not-moved'  },
+                     { type: 'rey', color: 'black', x: 90, y: 0, class: 'not-moved' },
+                     // Peones
+                     { type: 'peon', color: 'white', x: 0, y: 180, class: 'not-moved' },
+                     { type: 'peon', color: 'white', x: 30, y: 180, class: 'not-moved' },
+                     { type: 'peon', color: 'white', x: 60, y: 180, class: 'not-moved' },
+                     { type: 'peon', color: 'white', x: 90, y: 180, class: 'not-moved' },
+                     { type: 'peon', color: 'white', x: 120, y: 180, class: 'not-moved' },
+                     { type: 'peon', color: 'white', x: 150, y: 180, class: 'not-moved' },
+                     { type: 'peon', color: 'white', x: 180, y: 180, class: 'not-moved' },
+                     { type: 'peon', color: 'white', x: 210, y: 180, class: 'not-moved' },
+                     
+                     // ... Repite para todos los peones blancos
+                     { type: 'peon', color: 'black', x: 0, y: 30, class: 'not-moved' },
+                     { type: 'peon', color: 'black', x: 30, y: 30, class: 'not-moved' },
+                     { type: 'peon', color: 'black', x: 60, y: 30, class: 'not-moved' },
+                     { type: 'peon', color: 'black', x: 90, y: 30, class: 'not-moved' },
+                     { type: 'peon', color: 'black', x: 120, y: 30, class: 'not-moved' },
+                     { type: 'peon', color: 'black', x: 150, y: 30, class: 'not-moved' },
+                     { type: 'peon', color: 'black', x: 180, y: 30, class: 'not-moved' },
+                     { type: 'peon', color: 'black', x: 210, y: 30, class: 'not-moved' },
+                     // ... Repite para todos los peones negros
+                 ];
+ 
+                 // Crear todas las piezas en sus posiciones iniciales
+                 initialPositions.forEach(function(pieceConfig) {
+                     createPiece(pieceConfig);
+                 });
+                 
+                 // Restablecer el turno al jugador blanco
+                 $('#endGameMessage').fadeOut();
+                 currentTurn = 'white';
+                 updateTurnDisplay();
+                 updateClickablePieces();
+             }
+ 
+             function createPiece(piece) {
+                     var pieceId = `${piece.type}_${piece.color}_${piece.x / 30}_${piece.y / 30}`;
+                     var pieceClass = `piece ${piece.type} ${piece.type}-${piece.color} ${piece.color} ${piece.class || ''}`;
+                     var pieceImage = `../../Assets/svg/fichas/${piece.type}_${piece.color}.svg`;
+ 
+                     var imageElement = $(document.createElementNS('http://www.w3.org/2000/svg', 'image'));
+                     imageElement.attr({
+                         'id': pieceId,
+                         'class': pieceClass,
+                         'href': pieceImage,
+                         'x': piece.x,
+                         'y': piece.y,
+                         'width': 30,
+                         'height': 30
+                     }).appendTo('svg');
+             }
+ 
+             function endGame() {
+                 var winner = currentTurn === 'white' ? 'Negras' : 'Blancas';
+                 $('#endGameMessage').text('Fin del juego. ' + winner + ' ganan!');
+                 $('#endGameMessage').fadeIn();
+                 clearHighlights();
+                 setTimeout(resetBoard, 5000);
+             }
+             updateTurnDisplay();
+             updateClickablePieces();
+         });
+     </script>
+</body>
+
+</html>

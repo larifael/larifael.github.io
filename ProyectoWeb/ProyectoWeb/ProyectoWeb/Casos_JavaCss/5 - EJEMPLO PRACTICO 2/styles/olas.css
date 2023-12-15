@@ -1,0 +1,47 @@
+@keyframes olas {
+    0%{
+        left: -25%;
+    }
+    100%{
+        left: -0vw;
+    }
+}
+@keyframes olas2 {
+    0%{
+        left: -37.5%;
+    }
+    100%{
+        left: -12.5%;
+    }
+}
+.body   {
+    position: relative;
+}
+.olas1, .olas2{
+    position: absolute;
+    display: flex;
+    top: 30vh;
+    animation: olas 2s linear infinite;
+    padding: 0;
+    margin: 0;
+    max-width: 100%;
+}
+.olas1{
+z-index: -5;
+left: -37.5%;
+}
+.olas2{
+    animation: olas2 1s linear infinite;
+    z-index: -2;
+    top: 40vh;
+    left: -40%;
+
+}
+.olas1 img, .olas2 img{
+    position: absolute;
+    left: calc(25% * var(--n));
+    width: 25%;
+    height: 30vh;
+    padding: 0;
+    margin: 0;
+}

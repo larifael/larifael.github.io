@@ -1,0 +1,129 @@
+<svg width="480px" height="480px" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+                <!-- Fila 1 -->
+                <rect id="A-1" x="0" y="0" width="30" height="30" fill="black"/>
+                <rect id="A-2" x="30" y="0"  width="30" height="30" fill="white"/>
+                <rect id="A-3" x="60" y="0"  width="30" height="30" fill="black"/>
+                <rect id="A-4" x="90" y="0"  width="30" height="30" fill="white"/>
+                <rect id="A-5" x="120" y="0"  width="30" height="30" fill="black"/>
+                <rect id="A-6" x="150" y="0"  width="30" height="30" fill="white"/>
+                <rect id="A-7" x="180" y="0"  width="30" height="30" fill="black"/>
+                <rect id="A-8" x="210" y="0"  width="30" height="30" fill="white"/>
+              
+                <!-- Fila 2 -->
+                <rect id="B-1" x="0" y="30"  width="30" height="30" fill="white"/>
+                <rect id="B-2" x="30" y="30"  width="30" height="30" fill="black"/>
+                <rect id="B-3" x="60" y="30"  width="30" height="30" fill="white"/>
+                <rect id="B-4" x="90" y="30"  width="30" height="30" fill="black"/>
+                <rect id="B-5" x="120" y="30"  width="30" height="30" fill="white"/>
+                <rect id="B-6" x="150" y="30"  width="30" height="30" fill="black"/>
+                <rect id="B-7" x="180" y="30"  width="30" height="30" fill="white"/>
+                <rect id="B-8" x="210" y="30"  width="30" height="30" fill="black"/>
+              
+                <!-- Fila 3 -->
+                <rect id="C-1" x="0" y="60"  width="30" height="30" fill="black"/>
+                <rect id="C-2" x="30" y="60"  width="30" height="30" fill="white"/>
+                <rect id="C-3" x="60" y="60"  width="30" height="30" fill="black"/>
+                <rect id="C-4" x="90" y="60"  width="30" height="30" fill="white"/>
+                <rect id="C-5" x="120" y="60"  width="30" height="30" fill="black"/>
+                <rect id="C-6" x="150" y="60"  width="30" height="30" fill="white"/>
+                <rect id="C-7" x="180" y="60"  width="30" height="30" fill="black"/>
+                <rect id="C-8" x="210" y="60"  width="30" height="30" fill="white"/>
+              
+                <!-- Fila 4 -->
+                <rect id="D-1" x="0" y="90"  width="30" height="30" fill="white"/>
+                <rect id="D-2" x="30" y="90"  width="30" height="30" fill="black"/>
+                <rect id="D-3" x="60" y="90"  width="30" height="30" fill="white"/>
+                <rect id="D-4" x="90" y="90"  width="30" height="30" fill="black"/>
+                <rect id="D-5" x="120" y="90"  width="30" height="30" fill="white"/>
+                <rect id="D-6" x="150" y="90"  width="30" height="30" fill="black"/>
+                <rect id="D-7" x="180" y="90"  width="30" height="30" fill="white"/>
+                <rect id="D-8" x="210" y="90"  width="30" height="30" fill="black"/>
+              
+                <!-- Fila 5 -->
+                <rect id="E-1" x="0" y="120"  width="30" height="30" fill="black"/>
+                <rect id="E-2" x="30" y="120"  width="30" height="30" fill="white"/>
+                <rect id="E-3" x="60" y="120"  width="30" height="30" fill="black"/>
+                <rect id="E-4" x="90" y="120"  width="30" height="30" fill="white"/>
+                <rect id="E-5" x="120" y="120"  width="30" height="30" fill="black"/>
+                <rect id="E-6" x="150" y="120"  width="30" height="30" fill="white"/>
+                <rect id="E-7" x="180" y="120"  width="30" height="30" fill="black"/>
+                <rect id="E-8" x="210" y="120"  width="30" height="30" fill="white"/>
+              
+                <!-- Fila 6 -->
+                <rect id="F-1" x="0" y="150"  width="30" height="30" fill="white"/>
+                <rect id="F-2" x="30" y="150"  width="30" height="30" fill="black"/>
+                <rect id="F-3" x="60" y="150"  width="30" height="30" fill="white"/>
+                <rect id="F-4" x="90" y="150"  width="30" height="30" fill="black"/>
+                <rect id="F-5" x="120" y="150"  width="30" height="30" fill="white"/>
+                <rect id="F-6" x="150" y="150"  width="30" height="30" fill="black"/>
+                <rect id="F-7" x="180" y="150"  width="30" height="30" fill="white"/>
+                <rect id="F-8" x="210" y="150"  width="30" height="30" fill="black"/>
+              
+                <!-- Fila 7 -->
+                <rect id="G-1"  x="0" y="180"  width="30" height="30" fill="black"/>
+                <rect id="G-2" x="30" y="180"  width="30" height="30" fill="white"/>
+                <rect id="G-3" x="60" y="180"  width="30" height="30" fill="black"/>
+                <rect id="G-4" x="90" y="180"  width="30" height="30" fill="white"/>
+                <rect id="G-5" x="120" y="180"  width="30" height="30" fill="black"/>
+                <rect id="G-6" x="150" y="180"  width="30" height="30" fill="white"/>
+                <rect id="G-7" x="180" y="180"  width="30" height="30" fill="black"/>
+                <rect id="G-8" x="210" y="180"  width="30" height="30" fill="white"/>
+              
+                <!-- Fila 8 -->
+                <rect id="H-1" x="0" y="210"  width="30" height="30" fill="white"/>
+                <rect id="H-2" x="30" y="210"  width="30" height="30" fill="black"/>
+                <rect id="H-3" x="60" y="210"  width="30" height="30" fill="white"/>
+                <rect id="H-4" x="90" y="210"  width="30" height="30" fill="black"/>
+                <rect id="H-5" x="120" y="210"  width="30" height="30" fill="white"/>
+                <rect id="H-6" x="150" y="210"  width="30" height="30" fill="black"/>
+                <rect id="H-7" x="180" y="210"  width="30" height="30" fill="white"/>
+                <rect id="H-8" x="210" y="210"  width="30" height="30" fill="black"/>
+
+              <!--Torres Negras-->
+              <image id="torre_black_uno" href="../svg/fichas/torre_black.svg" x="0" y="0" width="30" height="30" />
+              <image id="torre_black_dos" href="../svg/fichas/torre_black.svg" x="210" y="0" width="30" height="30" />
+              <!--Caballos Negras-->
+              <image id="caballo_black_uno" href="../svg/fichas/caballo_black.svg" x="30" y="0" width="30" height="30" />
+              <image id="caballo_black_dos" href="../svg/fichas/caballo_black.svg" x="180" y="0" width="30" height="30" />
+              <!--Alfiles Negras-->
+              <image id="alfil_black_uno" href="../svg/fichas/Alfil_black.svg" x="60" y="0" width="30" height="30" />
+              <image id="alfil_black_dos" href="../svg/fichas/Alfil_black.svg" x="150" y="0" width="30" height="30" />
+               <!--Reyes Negras-->
+              <image id="rey_black" href="../svg/fichas/rey_black.svg" x="90" y="0" width="30" height="30" />
+              <image id="reina_black" href="../svg/fichas/reina_black.svg" x="120" y="0" width="30" height="30" />
+
+              <!--Fila de Peones negros-->
+              <image id="peon_black_uno" class="peon-black" href="../svg/fichas/peon_black.svg" x="0" y="30" width="30" height="30" />
+              <image id="peon_black_dos" class="peon-black" href="../svg/fichas/peon_black.svg" x="30" y="30" width="30" height="30" />
+              <image id="peon_black_tres" class="peon-black" href="../svg/fichas/peon_black.svg" x="60" y="30" width="30" height="30" />
+              <image id="peon_black_cuatro" class="peon-black" href="../svg/fichas/peon_black.svg" x="90" y="30" width="30" height="30" />
+              <image id="peon_black_cinco" class="peon-black" href="../svg/fichas/peon_black.svg" x="120" y="30" width="30" height="30" />
+              <image id="peon_black_seis" class="peon-black" href="../svg/fichas/peon_black.svg" x="150" y="30" width="30" height="30" />
+              <image id="peon_black_siete" class="peon-black" href="../svg/fichas/peon_black.svg" x="180" y="30" width="30" height="30" />
+              <image id="peon_black_ocho" class="peon-black" href="../svg/fichas/peon_black.svg" x="210" y="30" width="30" height="30" />
+
+
+
+              <!--Torres Negras-->
+              <image id="torre_white_uno" href="../svg/fichas/torre_white.svg" x="0" y="210" width="30" height="30" />
+              <image id="torre_white_dos" href="../svg/fichas/torre_white.svg" x="210" y="210" width="30" height="30" />
+              <!--Caballos Negras-->
+              <image id="caballo_white_uno" href="../svg/fichas/caballo_white.svg" x="30" y="210" width="30" height="30" />
+              <image id="caballo_white_dos" href="../svg/fichas/caballo_white.svg" x="180" y="210" width="30" height="30" />
+              <!--Alfiles Negras-->
+              <image id="alfil_white_uno" href="../svg/fichas/Alfil_white.svg" x="60" y="210" width="30" height="30" />
+              <image id="alfil_white_dos" href="../svg/fichas/Alfil_white.svg" x="150" y="210" width="30" height="30" />
+               <!--Reyes Negras-->
+              <image id="rey_white" href="../svg/fichas/rey_white.svg" x="90" y="210" width="30" height="30" />
+              <image id="reina_white" href="../svg/fichas/reina_white.svg" x="120" y="210" width="30" height="30" />
+
+              <!--Fila de Peones blanco-->
+              <image id="peon_white_1-2" class="peon-white" href="../svg/fichas/peon_white.svg" x="0" y="180" width="30" height="30" />
+              <image id="peon_white_2-2" class="peon-white" href="../svg/fichas/peon_white.svg" x="30" y="180" width="30" height="30" />
+              <image id="peon_white_3-2" class="peon-white" href="../svg/fichas/peon_white.svg" x="60" y="180" width="30" height="30" />
+              <image id="peon_white_4-2" class="peon-white" href="../svg/fichas/peon_white.svg" x="90" y="180" width="30" height="30" />
+              <image id="peon_white_5-2" class="peon-white" href="../svg/fichas/peon_white.svg" x="120" y="180" width="30" height="30" />
+              <image id="peon_white_6-2" class="peon-white" href="../svg/fichas/peon_white.svg" x="150" y="180" width="30" height="30" />
+              <image id="peon_white_7-2" class="peon-white" href="../svg/fichas/peon_white.svg" x="180" y="180" width="30" height="30" />
+              <image id="peon_white_6-2" class="peon-white" href="../svg/fichas/peon_white.svg" x="210" y="180" width="30" height="30" />
+</svg> 

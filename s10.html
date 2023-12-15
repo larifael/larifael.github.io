@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CachinaTec</title>
+    <link rel="stylesheet" href="Assets/Librerias/Boostrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="Assets/css/style.css">
+    <link rel="shortcut icon" href="Assets/img/logo.jpg">
+    <style>
+        
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100 bg-dark-subtle" data-bs-theme="light">
+    <nav class="navbar fixed-top bg-dark navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <img class="rounded-circle" src="Assets/img/logo.jpg" alt="logo" width="50" height="50">
+            </a>
+            <a  href="index.html"><span class="navbar-brand mb-0 h1 animate__animated animate__tada">CachinaTec</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end bg-dark" style="width: 250px;" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header text-white">
+                  <a  href="index.html"><h5 class="offcanvas-title" id="offcanvasNavbarLabel">CachinaTec</h5></a>
+                  <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                  <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <li class="nav-item">
+                      <a class="nav-link active" aria-current="page" href="s10.html">Formulario</a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="offcanvas offcanvas-end bg-dark" style="width: 250px;" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                  <div class="offcanvas-header text-white">
+                    <a  href="index.html"><h5 class="offcanvas-title" id="offcanvasNavbarLabel">CachinaTec</h5></a>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                  </div>
+                  <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                      <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#sobre-nosotros">Sobre Nosotros</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link active" aria-current="page" href="#equipo-trabajo">Equipo de Trabajo</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link active" aria-current="page" href="#archivos-actividades">Descarga de Actividades</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link active" aria-current="page" href="ClaseArray.html">Catalogo de Compra</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="offcanvas-footer text-white p-3" style="font-size: 12px;">
+                      <p class="mb-1 ">INSTITUTO DE EDUCACIÓN SUPERIOR “SIMÓN BOLÍVAR”</p>
+                      <p>DESARROLLO DE SISTEMAS DE LA INFORMACIÓN</p>
+                      <br>
+                      <div class="row" style="align-content: center;">
+                          <div class="col-6">
+                              <a href="https://www.institutobolivar.edu.pe" target="_blank">
+                                  <img class="rounded-circle" src="Assets/img/LogoBolivar.png" alt="logo Simón Bolívar" width="90" height="90">
+                              </a>
+                          </div>
+                          <div class="col-6">
+                              <a href="index.html">
+                                  <img class="rounded-circle" src="Assets/img/logo.jpg" alt="logo Simón Bolívar" width="90" height="90">
+                              </a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </nav>
+    <br>
+    <br>
+    <br>
+    <div class="container-fluid bg-dark" id="navegador">
+        <div class="row align-items-center">
+            <div class="col-12 col-lg-6 d-flex justify-content-start">
+                <div class="loading-spinner" id="loading_spinner"></div>
+                <a href="index.html" class="btn  btn-lg rounded-pill text-white" id="btnVolver" style="display: none;">
+                    <i class="fas fa-arrow-left"></i> Volver a la página de inicio
+                </a>
+            </div>
+            <div class="col-12 col-lg-6 d-flex justify-content-end align-items-center">
+                <label>Cursos:</label>
+                <select id="cursoSelect">
+                    <option value="s1" selected disabled>-- Seleccione su curso --</option>
+                    <option value="s2">Aplicar Efectos a un Objeto</option>
+                    <option value="s3">Aplicar posicionamiento a los objetos</option>
+                    <option value="s4">Inserción de columnas</option>
+                    <option value="s5">Transparencia, Degradados, Animación y SVG</option>
+                    <option value="s6">Aplicar Librerías para Animar Objetos</option>
+                    <option value="s7">JavaScript</option>
+                    <option value="s8">Estructuras y Operadores</option>
+                    <option value="s10">Programación orientada a objetos</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div id="alert-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
+    <main class="container flex-grow-1 bg-light-subtle animate__animated" id="ContenedorDePagina" style="opacity: 0;">
+      <div class="container">
+          <h1 class="my-4" style="padding-top: 10px;">Programación Orientada a Objetos</h1>
+          <hr>
+          <div class="container mt-5">
+            <h1 class="mb-4">Registro de Estudiante</h1>
+            <form id="formulariDatos">
+              <div class="form-group">
+                <label for="nameEstudiante">Ingrese nombre del estudiante:</label>
+                <input type="text" class="form-control" id="nameEstudiante" name="nameEstudiante" required>
+              </div>
+              <div class="form-group">
+                <label for="apeEstudiante">Ingrese apellidos del estudiante:</label>
+                <input type="text" class="form-control" id="apeEstudiante" name="apeEstudiante" required>
+              </div>
+              <div class="form-group">
+                <label for="CarreraEstudiante">Carrera:</label>
+                <select class="form-control" id="CarreraEstudiante" name="CarreraEstudiante" required>
+                  <option value="Administración de empresas">Administración de empresas</option>
+                  <option value="Contabilidad">Contabilidad</option>
+                  <option value="Desarrollo de sistemas de la información">Desarrollo de sistemas de la información</option>
+                  <option value="Electricidad industrial">Electricidad industrial</option>
+                  <option value="Electrónica industrial">Electrónica industrial</option>
+                  <option value="Enfermería técnica">Enfermería técnica</option>
+                  <option value="Tecnología de análisis químico">Tecnología de análisis químico</option>
+                  <option value="Cocina">Cocina</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="cicloEstudiante">Ciclo del estudiante:</label>
+                <input type="number" class="form-control" id="cicloEstudiante" name="cicloEstudiante" value="1" min="1" max="6" required>
+              </div><br>
+              <button type="submit" class="btn btn-primary">Enviar</button>
+            </form>
+          </div>
+          <div id="resultado" class="container mt-5"></div>
+          <div id="estudiantesContainer" class="container mt-5">
+            <h2>Listado de Estudiantes</h2>
+            <div id="mensajeNoEstudiantes" style="display: none;">
+              No hay estudiantes para mostrar.
+            </div>
+            <div class="row" id="estudiantesCards" style="margin-top: 20px;margin-top: 20px;"></div>
+          </div>
+      </div>
+    </main>
+    <footer class="bg-dark text-white py-4">
+      <div class="container">
+          <div class="row">
+              <div class="col-md-4">
+                  <h5>&copy; 2023 CachinaTec.</h5>
+                  <p>Información adicional del sitio.</p>
+              </div>
+              <div class="col-md-4">
+                  <h5>Enlaces útiles</h5>
+                  <ul class="navbar-nav">
+                      <li class="nav-item"><a href="#" class="nav-link text-white">Inicio</a></li>
+                      <li class="nav-item"><a href="#" class="nav-link text-white">Sobre nosotros</a></li>
+                      <li class="nav-item"><a href="#" class="nav-link text-white">Contacto</a></li>
+                  </ul>
+              </div>
+              <div class="col-md-4">
+                  <h5>Contacto</h5>
+                  <p>cachinatec@gmail.com</p>
+              </div>
+          </div>
+      </div>
+  </footer>
+  <script src="Assets/Librerias/Boostrap/js/bootstrap.min.js"></script>
+  <script src="Assets/js/script.js"></script>
+  <script src="Assets/js/CursosSwich.js"></script>
+  <script src="https://kit.fontawesome.com/5391b865ab.js" crossorigin="anonymous"></script>
+  <script type="module" src="Assets/js/FormEstudiante.js"></script>
+</body>
+</html>
+

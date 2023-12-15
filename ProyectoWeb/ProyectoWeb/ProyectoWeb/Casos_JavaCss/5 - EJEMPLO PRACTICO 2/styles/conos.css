@@ -1,0 +1,95 @@
+.grupoConos {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(0);
+    transition: transform 4s ease-in;
+    z-index: -7;
+}
+
+.grupoConos .cono {
+    position: relative;
+    z-index: -6;
+    bottom: 25vh;
+    margin: 0 7vw;
+    animation-delay: var(--dly);
+    animation-duration: 2s;
+    animation-name: conoFlotando;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+.cono img {
+    width: 15vw;
+    height: 12vh;
+}
+
+.cono div {
+    position: relative;
+    width: 20vw;
+    left: -2.1vw;
+    top: 0;
+    height: 10vh;
+    background-color: rgb(209, 233, 233);
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+
+    border: 10px rgba(212, 216, 176, 0.998) dashed;
+}
+@keyframes conoFlotando {
+    0%{
+        left: 0;
+        bottom: 25vh;
+        transform: rotate(0deg);
+    }
+    25%{
+        left: 2vw;
+        bottom: 26vh;
+        transform: rotate(-5deg);
+    }
+    50%{
+        left: 4vw;
+        bottom: 25vh;
+    }
+    75%{
+        left: 2vw;
+        bottom: 24vh;
+        transform: rotate(3deg);
+    }  
+    100%{
+        left: 0;
+        bottom: 25vh;
+        transform: rotate(0deg);
+    }
+}
+@keyframes acercar {
+    0%{
+        left: 0;
+        bottom: 25vh;
+        transform: rotate(0deg);
+    }
+    25%{
+        left: 2vw;
+        bottom: 26vh;
+        transform: rotate(-5deg);
+    }
+    50%{
+        left: 4vw;
+        bottom: 25vh;
+    }
+    75%{
+        left: 2vw;
+        bottom: 24vh;
+        transform: rotate(3deg);
+    }  
+    100%{
+        left: 0;
+        bottom: 25vh;
+        transform: rotate(0deg);
+    }
+}

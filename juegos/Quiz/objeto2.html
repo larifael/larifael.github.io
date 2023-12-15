@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      margin: 50px;
+      background-color: #f4f4f4;
+    }
+
+    #question-container {
+      margin-bottom: 20px;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    #timer-container {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    #answer-box {
+      width: 50%;
+      margin: 20px auto;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    #score-container {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+  <title>Juego de Preguntas del Perú</title>
+</head>
+<body>
+
+<div id="question-container">
+  <h2>Pregunta: <span id="question"></span></h2>
+</div>
+
+<div id="timer-container">
+  Tiempo restante: <span id="timer">10</span> segundos
+</div>
+
+<div id="answer-box">
+  <label for="user-answer">Tu respuesta:</label>
+  <input type="text" id="user-answer" placeholder="Escribe tu respuesta aquí">
+</div>
+
+<div id="score-container">Puntos: <span id="score">0</span></div>
+
+<button onclick="checkAnswer()">Verificar Respuesta</button>
+
+<p id="result"></p>
+
+<script>
+  const questions = [
+    { question: "¿Cuál es la capital de Perú?", correctAnswer: "Lima", points: 10 },
+    { question: "¿En qué año se declaró la independencia del Perú?", correctAnswer: 1821, points: 10 },
+    { question: "¿Cuál es la montaña más alta de Perú?", correctAnswer: "Huascarán", points: 10 }
+  ];
+
+  let currentQuestionIndex = 0;
+  let timer;
+  let score = 0;
+
+  function displayQuestion() {
+    const currentQuestion = questions[currentQuestionIndex];
+    document.getElementById('question').textContent = currentQuestion.question;
+    startTimer();
+  }
+
+  function startTimer() {
+    let timeLeft = 10;
+    document.getElementById('timer').textContent = timeLeft;
+
+    timer = setInterval(function () {
+      timeLeft--;
+      document.getElementById('timer').textContent = timeLeft;
+
+      if (timeLeft === 0) {
+        clearInterval(timer);
+        checkAnswer();
+      }
+    }, 1000);
+  }
+
+  function stopTimer() {
+    clearInterval(timer);
+  }
+
+  function checkAnswer() {
+    stopTimer();
+
+    const userAnswer = document.getElementById('user-answer').value;
+    const currentQuestion = questions[currentQuestionIndex];
+    const correctAnswer = currentQuestion.correctAnswer;
+
+    const resultText = userAnswer.toLowerCase() === String(correctAnswer).toLowerCase()
+      ? `¡Respuesta correcta! Obtuviste ${currentQuestion.points} puntos.`
+      : `Respuesta incorrecta. La respuesta correcta es: ${correctAnswer}`;
+
+    document.getElementById('result').textContent = resultText;
+
+    if (userAnswer.toLowerCase() === String(correctAnswer).toLowerCase()) {
+      score += currentQuestion.points;
+      document.getElementById('score').textContent = score;
+    }
+
+    // Mostrar animación de resultado
+    document.getElementById('result').style.opacity = 0;
+    setTimeout(() => {
+      document.getElementById('result').style.opacity = 1;
+    }, 500);
+
+    // Pasar a la siguiente pregunta después de 2 segundos
+    setTimeout(() => {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        displayQuestion();
+        document.getElementById('result').textContent = '';
+        document.getElementById('user-answer').value = '';
+      } else {
+        document.getElementById('question-container').innerHTML = '<h2>¡Fin del juego!</h2>';
+        document.getElementById('answer-box').style.display = 'none';
+        document.getElementById('timer-container').style.display = 'none';
+        document.getElementById('score-container').textContent = `Puntuación final: ${score} puntos`;
+      }
+    }, 2000);
+  }
+
+  // Inicialización
+  displayQuestion();
+</script>
+
+</body>
+</html>
+
+
+
+

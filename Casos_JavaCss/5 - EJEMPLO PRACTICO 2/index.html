@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-store">
+</head>
+<link rel="stylesheet" href="./styles/barco.css">
+<link rel="stylesheet" href="./styles/olas.css">
+<link rel="stylesheet" href="./styles/conos.css">
+<link rel="shortcut icon" href="Assets/img/logo.jpg">
+<title>Caso Practico S08</title>
+</head>
+
+<body>
+    <section class="barco" id="barco">
+        <div class="ventana">
+            <div class="left"></div>
+            <div class="left2"></div>
+            <div class="right"></div>
+            <div class="right2"></div>
+        </div>
+        <div class="panel">
+            <div class="botones">
+                <button onclick='moverBarco("0")' id="boton">1</button>
+                <button onclick='moverBarco("1")' id="boton">2</button>
+                <button onclick='moverBarco("2")' id="boton">3</button>
+                <button class="respuesta" onclick="escribirRespuesta(4)" id="boton">escribir respuesta</button>
+            </div>
+            <div class="botones2">
+                <button></button>
+                <button></button>
+                <button></button>
+                <button></button>
+            </div>
+            <div class="botones3" id="pregunta">
+                
+            </div>
+        </div>
+            <div class="radio">
+                <button onclick="playRadio()" class="play" id="radio"></button>
+            </div>
+    </section>
+    <section class="opcionElegida"></section>
+    <section class="olas1">
+        <img src="sources/olaCercana.png" alt="" style="--n:0">
+        <img src="sources/olaCercana.png" alt="" style="--n:1">
+        <img src="sources/olaCercana.png" alt="" style="--n:2">
+        <img src="sources/olaCercana.png" alt="" style="--n:3">
+        <img src="sources/olaCercana.png" alt="" style="--n:4">
+        <img src="sources/olaCercana.png" alt="" style="--n:5">
+    </section>
+    <section class="olas2">
+        <img src="sources/olaLejana.png" alt="" style="--n:0">
+        <img src="sources/olaLejana.png" alt="" style="--n:1">
+        <img src="sources/olaLejana.png" alt="" style="--n:2">
+        <img src="sources/olaLejana.png" alt="" style="--n:3">
+        <img src="sources/olaLejana.png" alt="" style="--n:4">
+        <img src="sources/olaLejana.png" alt="" style="--n:5">
+        <img src="sources/olaLejana.png" alt="" style="--n:6">
+    </section>
+    <section class="fondo"></section>
+    <section class="grupoConos" id="grupoConos" style="--dly: 1.4s">
+        <div class="cono"> <div id="op01">asd</div> <img src="./sources/cono.png" alt="" ></div>
+        <div class="cono" style="--dly: 0s"> <div id="op02">asd</div> <img src="./sources/cono.png" alt=""></div>
+        <div class="cono" style="--dly: 0.5s"> <div id="op03">asdasd</div> <img src="./sources/cono.png" alt="" class="op03"></div>
+    </section>
+
+    <script src="./scripts/datos.js"></script>
+    <script src="./scripts/estilos.js"></script>
+    <script src="./scripts/condiciones.js"></script>
+</body>
+
+</html>

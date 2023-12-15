@@ -1,0 +1,181 @@
+.pista {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: 20vh;
+}
+
+#ejercicio {
+    font-size: 2em;
+}
+
+#estado,
+#vista {
+    background-color: rgba(250, 246, 193);
+    background-color: rgba(255, 248, 157, 0.493);
+    transition-property: background-color, transform;
+    transition-duration: 0.1s;
+    width: 5vh;
+    height: 5vh;
+    max-height: 70px;
+    max-width: 70px;
+    top: 0;
+    left: 0;
+    position: absolute;
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.play,
+.pausa,
+.repetir {
+    scale: 1;
+    stroke: none;
+    transition-duration: 0.1s;
+    opacity: 1;
+    width: 60%;
+    height: 60%;
+    position: absolute;
+    fill: white;
+}
+
+.play,
+.repetir {
+    opacity: 0;
+    scale: 0;
+}
+
+#estado:hover>#aviso {
+    scale: 1;
+    opacity: 1;
+    width: 400%;
+}
+
+.repetir {
+    transition-duration: 0.5s;
+}
+
+#estado:hover .repetir {
+    transition-duration: 0.5s;
+    transform: rotate(180deg);
+}
+
+#aviso {
+    z-index: 1;
+    margin-bottom: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    --color: rgb(193, 207, 221);
+    background-color: var(--color);
+    border-radius: 10%;
+    height: 200%;
+    width: 10%;
+    scale: 0;
+    opacity: 0;
+    position: absolute;
+    padding: 4%;
+    left: 130%;
+    color: rgb(39, 35, 30);
+    transition-delay: 0.05s;
+    transition-property: scale, opacity, width;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in-out;
+}
+
+.triangulo {
+    fill: rgb(193, 207, 221);
+    position: absolute;
+    left: -5%;
+    bottom: 20%;
+    margin: auto;
+    width: 30%;
+    height: 40%;
+    rotate: 20deg;
+}
+
+#ejercicio {
+    width: 80%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    z-index: -1;
+}
+
+#ejSiguiente,
+#ejActual {
+    transition-property: filter, font-size;
+    transition-duration: 1s;
+    width: 50%;
+    filter: blur(0px);
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    border-radius: 20%;
+    border: 20%;
+}
+
+#ejSiguiente {
+    filter: blur(2px);
+    scale: 0.5;
+    opacity: 0.5;
+    top: 0%;
+}
+
+#ejActual {
+    scale: 1;
+    size: auto;
+    top: 45%;
+}
+
+#duracion {
+    font-size: 50%;
+    top: 55%;
+    left: 20%;
+    position: absolute;
+}
+
+#vista {
+    border-radius: 50%;
+    left: auto;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(152, 174, 192);
+}
+
+#vista>img {
+    position: absolute;
+    width: 80%;
+    height: 80%;
+}
+
+.a,
+.c{
+    scale: 1;
+    stroke: none;
+    transition-duration: 0.2s;
+    opacity: 1;
+    width: 60%;
+    height: 60%;
+    position: absolute;
+    fill: rgb(235, 228, 228);
+}
+.nota {
+    opacity: 1;
+    transition-duration: 0.2s;
+}
+.a,
+.c {
+    opacity: 0;
+    scale: 0;
+}
+
+.a {
+    opacity: 1;
+    scale: 1;
+}

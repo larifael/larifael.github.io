@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CachinaTec</title>
+    <link rel="stylesheet" href="Assets/Librerias/Boostrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="Assets/css/style.css">
+    <link rel="shortcut icon" href="Assets/img/logo.jpg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+    <style>
+        .card-img-top {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .fade-out {
+            animation: fadeOut 1s;
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        .fade-in {
+            animation: fadeInAnimation ease 1s;
+            animation-iteration-count: 1;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes fadeInAnimation {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100 bg-dark-subtle" data-bs-theme="light">
+    <nav class="navbar fixed-top bg-dark navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <img class="rounded-circle" src="Assets/img/logo.jpg" alt="logo" width="50" height="50">
+            </a>
+            <a  href="index.html"><span class="navbar-brand mb-0 h1 animate__animated animate__tada">CachinaTec</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end bg-dark" style="width: 250px;" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header text-white">
+                  <a  href="index.html"><h5 class="offcanvas-title" id="offcanvasNavbarLabel">CachinaTec</h5></a>
+                  <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                  
+                </div>
+                <div class="offcanvas-footer text-white p-3" style="font-size: 12px;">
+                    <p class="mb-1 ">INSTITUTO DE EDUCACIÓN SUPERIOR “SIMÓN BOLÍVAR”</p>
+                    <p>DESARROLLO DE SISTEMAS DE LA INFORMACIÓN</p>
+                    <br>
+                    <div class="row" style="align-content: center;">
+                        <div class="col-6">
+                            <a href="https://www.institutobolivar.edu.pe" target="_blank">
+                                <img class="rounded-circle" src="Assets/img/LogoBolivar.png" alt="logo Simón Bolívar" width="90" height="90">
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <a href="index.html">
+                                <img class="rounded-circle" src="Assets/img/logo.jpg" alt="logo Simón Bolívar" width="90" height="90">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <br>
+    <br>
+    <br>
+    <div class="container-fluid bg-dark" id="navegador">
+        <div class="row align-items-center">
+            <div class="col-12 col-lg-6 d-flex justify-content-start">
+                <a href="index.html" class="btn  btn-lg rounded-pill text-white" id="btnVolver" >
+                    <i class="fas fa-arrow-left"></i> Volver a la página de inicio
+                </a>
+            </div>
+            <div class="col-12 col-lg-6 d-flex justify-content-end align-items-center">
+                <label style="display: none;">Cursos:</label>
+                <select id="cursoSelect" style="display: none;">
+                </select>
+                <div class="loading-spinner" id="loading_spinner"></div>
+            </div>
+        </div>
+    </div>
+    <main class="container flex-grow-1 bg-light-subtle animate__animated" id="ContenedorDePagina" style="opacity: 0;">
+        <div class="container mt-2 mb-5">
+            <h1 class="my-4">Ejemplo de uso de la clase Array</h1>
+            <div class="d-flex justify-content-end">
+                <div class="input-group m-5">
+                    <input type="text" class="form-control" id="buscarProducto" placeholder="Buscar Producto...">
+                    <button class="btn btn-outline-secondary" type="button" id="botonBuscar">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+                <button type="button" class="btn btn-primary m-5" data-bs-toggle="modal" data-bs-target="#modalAgregarProducto">
+                    Agregar Producto
+                </button>
+            </div>
+        </div>
+        <div class="container mt-4 mb-5">
+            <div id="productosContainer" class="row"></div>
+        </div>
+    </main>
+    <!-- Modal -->
+    <div class="modal fade" id="modalAgregarProducto" tabindex="-1" aria-labelledby="modalAgregarProductoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="modalAgregarProductoLabel">Agregar Producto</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <!-- Formulario para agregar producto -->
+            <form id="formAgregarProducto">
+                <div class="form-group">
+                <label for="nombreProducto">Nombre del Producto</label>
+                <input type="text" class="form-control" id="nombreProducto" required>
+                </div>
+                <div class="form-group">
+                <label for="descripcionProducto">Descripción</label>
+                <input type="text" class="form-control" id="descripcionProducto" required>
+                </div>
+                <div class="form-group">
+                <label for="precioProducto">Precio</label>
+                <input type="number" class="form-control" id="precioProducto" required>
+                </div>
+                <div class="form-group">
+                <label for="urlProducto">URL de la Imagen</label>
+                <input type="text" class="form-control" id="urlProducto" required>
+                </div>
+            </form>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-primary" form="formAgregarProducto">Agregar Producto</button>
+            </div>
+        </div>
+        </div>
+    </div>  
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>&copy; 2023 CachinaTec.</h5>
+                    <p>Información adicional del sitio.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Enlaces útiles</h5>
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a href="#" class="nav-link text-white">Inicio</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link text-white">Sobre nosotros</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link text-white">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contacto</h5>
+                    <p>cachinatec@gmail.com</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        let productos = [
+            { id: 1, nombre: 'Producto 1', descripcion: 'Descripción del Producto 1', precio: 100, url: 'data:image/jpeg;base64,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' },
+            { id: 2, nombre: 'Producto 2', descripcion: 'Descripción del Producto 2', precio: 200, url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT07Lfw0qGGdOCIUfRBR5-iGxcRWae9qMjJPHa5kCTvD_n8Bd4TQ6uR48VdkzviAKMJeeM&usqp=CAU' },
+            { id: 3, nombre: 'Producto 3', descripcion: 'Descripción del Producto 3', precio: 300, url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYpAYakAjLMNrYVKWIS4toTZFLnbSWo3Ya1w02XpbRIwLIkKDtq7lObu32N-RCP3fZmOs&usqp=CAU' },
+            { id: 4, nombre: 'Producto 4', descripcion: 'Descripción del Producto 4', precio: 400, url: 'https://www.ensure.abbott/content/dam/an/abbott-latam-nutrition/web/ensure/pe/es/nuestros-productos/secundario_mobile_nuestros-productos_ensure%20liquido_ensure_pe.png' },
+            { id: 5, nombre: 'Producto 5', descripcion: 'Descripción del Producto 5', precio: 500, url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCCM-kZPQsPRwxeW9Xx6hDrMhRa9dSyRD4b5hbdTqTzYCQlGvpLq17Q5uzNNN0CFByY-A&usqp=CAU' },
+        ];
+
+        document.getElementById('formAgregarProducto').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Obtén los valores del formulario
+            const nombre = document.getElementById('nombreProducto').value;
+            const descripcion = document.getElementById('descripcionProducto').value;
+            const precio = document.getElementById('precioProducto').value;
+            const url = document.getElementById('urlProducto').value;
+
+            // Agrega el nuevo producto al array
+            const nuevoId = productos.length + 1; // Esto asume que los ID son secuenciales
+            productos.push({ id: nuevoId, nombre, descripcion, precio, url });
+
+            // Actualiza la visualización y cierra el modal
+            renderizarProductos();
+            var modalEl = document.getElementById('modalAgregarProducto');
+            var modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide();
+        });
+    
+        function eliminarProducto(id) {
+            // Lógica para eliminar el producto del array
+            const card = document.querySelector(`#producto-${id}`);
+            if (card) {
+                // Aplica la animación de desvanecimiento
+                card.classList.add('fade-out');
+
+                // Espera 1 segundo antes de eliminar el producto
+                setTimeout(() => {
+                    productos = productos.filter(producto => producto.id !== id);
+                    renderizarProductos();
+                }, 1000); // 1000 ms = 1 s
+                
+            }
+        }
+
+        // Event listener para el input de búsqueda
+        document.getElementById('buscarProducto').addEventListener('input', function(e) {
+            renderizarProductos(e.target.value);
+        });
+
+        document.getElementById('botonBuscar').addEventListener('click', function() {
+            const textoBusqueda = document.getElementById('buscarProducto').value;
+            renderizarProductos(textoBusqueda);
+        });
+    
+        function renderizarProductos(busqueda = '') {
+            let productosContainer = document.getElementById('productosContainer');
+            productosContainer.innerHTML = '';
+
+            let productosAMostrar = productos;
+
+            // Filtrar productos si se proporciona una búsqueda
+            if (busqueda) {
+                const textoBusqueda = busqueda.toLowerCase();
+                productosAMostrar = productos.filter(producto =>
+                    producto.nombre.toLowerCase().includes(textoBusqueda)
+                );
+            }
+
+            // Renderizar productos o mostrar mensaje si no hay disponibles
+            if (productosAMostrar.length === 0) {
+                let mensaje = document.createElement('p');
+                mensaje.innerText = 'No hay productos disponibles.';
+                productosContainer.appendChild(mensaje);
+            } else {
+                productosAMostrar.forEach(producto => {
+                    let card = document.createElement('div');
+                    card.id = `producto-${producto.id}`;
+                    card.className = 'card col-12 col-md-3 mb-3 m-2';
+                    card.innerHTML = `
+                        <img src="${producto.url}" class="card-img-top img-fluid" alt="${producto.nombre}">
+                        <div class="card-body">
+                            <h5 class="card-title">${producto.nombre}</h5>
+                            <p class="card-text">${producto.descripcion}</p>
+                            <p class="card-text">Precio: $${producto.precio}</p>
+                            <button class="btn btn-danger" onclick="eliminarProducto(${producto.id})">Eliminar</button>
+                        </div>
+                    `;
+                    productosContainer.appendChild(card);
+                });
+            }
+        }
+    
+        renderizarProductos();
+    </script>    
+    <script src="Assets/Librerias/Boostrap/js/bootstrap.min.js"></script>
+    <script src="Assets/js/script.js"></script>
+    <script src="Assets/js/CursosSwich.js"></script>
+    <script src="https://kit.fontawesome.com/5391b865ab.js" crossorigin="anonymous"></script>
+</body>
+</html>
+
+

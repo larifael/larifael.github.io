@@ -1,0 +1,117 @@
+* {
+    --nNaturales: 7;  
+    --oc: 0;  
+    --altInf: rgb(84, 39, 64);
+    --altSup: rgb(131, 124, 182);
+    --natInf: rgb(192, 236, 239);
+    --natSup: rgb(199, 157, 232);
+}
+.instrumentos{
+    height: 10vh;
+    margin-top: 2vh;
+    display: flex;
+    gap: 2vw;
+}
+#pista>button{
+    scale: 1;
+    border: none;
+    border-radius: 15%;
+    box-shadow: inset -1px 3px 10px 2px rgba(66, 25, 39, 0.11);
+    transition-property: background-color,color,box-shadow, scale;
+    transition-duration: 0.2s;
+}
+#pista>button:hover{
+    scale: 1.1;
+    color: rgba(255, 255, 255, 0.199);
+    box-shadow: inset -1px -5px 10px 2px rgba(226, 179, 212, 0.301);
+}
+.piano {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    height: 40vh;
+    font-size: 1.3vw;
+    border-radius: 10px;
+}
+.octava {
+    position: absolute;
+    display: flex;
+    height: 100%;
+    width: calc(99%/3);
+    left: calc((100.5%/3)*var(--oct));
+}
+
+.par {
+    position: absolute;
+    display: flex;
+    height: 100%;
+    left: calc(100%/var(--nNaturales)*var(--n));
+    width: calc(95%/var(--nNaturales));
+}
+.alterada,
+.natural {
+    position: absolute;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 1vh;
+    text-align: center;
+    border-radius: 0 0 0.5vw 0.5vw;
+    filter:grayscale(80%);
+    top: 0;
+    transition: top 0.05s ease;
+}
+
+.natural {
+    z-index: 2;
+    background:linear-gradient(var(--natSup),var(--natInf));
+    --box-shadow: inset 0 -5px 10px -1px  rgb(73, 69, 73);
+    color: black;
+}
+
+.alterada {
+    margin: 0.5vw;
+    border-radius: 0.7vw 0.7vw 0.5vw 0.5vw;
+    z-index: 3;
+    position: absolute;
+    left: 50%;
+    top: -3%;
+    height: 70%;
+    background:linear-gradient(var(--altInf),var(--altSup));
+    --box-shadow: inset 0 -5px 10px 5px rgb(33, 33, 33);
+    color: white;
+    font-size: 1vw;
+}
+
+.inicio{
+    border-radius: 1.5vw 1vw 0.5vw 1.5vw;
+}
+.fin{
+    border-radius: 1vw 1.5vw 1.5vw 0.5vw;
+}
+@media screen and (max-width:700px) {
+    .alterada {
+        font-size: 1.9vw;
+    }
+    .piano {
+        width: 100%;
+        font-size: 2.5vw;
+    }
+    .three{
+        display: none;
+    }
+    .one , .two{
+        width: calc(100%/2);
+        left: calc((100%/2)*var(--oct));
+    }
+}
+.nota{
+    writing-mode: vertical-rl;
+      text-orientation: upright;
+      white-space: nowrap;
+      font-size: 20px;
+    bottom: 15%;
+    position: absolute;
+}
